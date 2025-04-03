@@ -1,9 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
+# Desafio FrontEnd - Gestão de Eventos
+Cria uma aplicação de gestão e venda de eventos fazendo o gerenciamento com os CRUDs de eventos, setores, cupons e também a edição do perfil e configurações.
+## Como executar
 ```bash
 npm run dev
 # or
@@ -14,23 +11,74 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estutura de pastas
+```
+/src
+  /app
+    /api (rotas da API fake via JSON Server)
+    /(public) (rotas públicas: login, cadastro)
+      /login
+      /signup
+    /(protected) (rotas privadas - requer autenticação)
+      /dashboard
+      /events
+      /sectors
+      /coupons
+      /profile
+      /settings
+      /checkout
+    layout.tsx (providers: Zustand, Socket.io, etc.)
+  /components (componentes reutilizáveis)
+  /lib
+    /api (client do JSON Server)
+    /socket (config do WebSocket)
+    /stores (Zustand)
+  /styles (globals.css)
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Arquitetura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Next.js (App Router): Roteamento integrado, SSR para SEO e performance.
 
-## Learn More
+* Zustand + React Query: Estado global simples + cache eficiente.
 
-To learn more about Next.js, take a look at the following resources:
+* Tailwind: UI consistente sem perder flexibilidade.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* JSON Server: API fake rápida para prototipação.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Login/Cadastro
+     - NextAuth.js com provedor credentials (simulado via JSON Server).
+     - Formulários com React Hook Form + Zod.
 
-## Deploy on Vercel
+* CRUDs (Eventos, Setores, Cupons, Lotes)
+     - Páginas SSR (Server Components) para listagem.
+     - Modais/interfaces de edição com Client Components.
+     - Zustand para estado global (ex: useEventStore).
+     - React Query para cache e sincronização com a API fake.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Checkout (PIX)
+     - Biblioteca como react-qrcode para exibir o QR Code.
+     - Zustand para gerenciar o estado do carrinho.
+     - vWebSocket para atualizar status do pagamento.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* WebSocket (Notificações)
+     - Socket.io client no layout.tsx para escutar eventos globais.
+
+* Configurações da Loja
+     - Formulário dinâmico (salvo no JSON Server).
+     - Preview em tempo real com Tailwind CSS (ex: alterar cores primárias).
+ 
+* Perfil e Segurança
+    - Página de perfil com edição de dados + modal para resetar senha.
+* API Fake (JSON Server)
+    - Arquivo db.json com estrutura:
+    ```
+        {
+            "users": [],
+            "events": [],
+            "sectors": [],
+            "coupons": []
+        }
+    ```
+    - Rotas simuladas via json-server (ex: POST /api/events).
+
