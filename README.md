@@ -1,6 +1,7 @@
 # Desafio FrontEnd - Gestão de Eventos
 Cria uma aplicação de gestão e venda de eventos fazendo o gerenciamento com os CRUDs de eventos, setores, cupons e também a edição do perfil e configurações.
 ## Como executar
+Frontend
 ```bash
 npm run dev
 # or
@@ -9,6 +10,16 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
+Mock server
+```bash
+npm run mock
+# or
+yarn mock
+# or
+pnpm mock
+# or
+bun mock
 ```
 
 ## Estutura de pastas

@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = users[0];
   
       if (user && user.password === password) {
-        const token = 'fake-jwt-token'; // Em produção, use um JWT real
+        const token = 'fake-jwt-token';
         localStorage.setItem('auth-token', token);
         set({ user: { id: user.id, email: user.email, name: user.name, role: user.role }, token });
       } else {

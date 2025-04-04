@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const { login } = useAuthStore();
@@ -18,9 +19,10 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
+      toast.success('Login realizado com sucesso!');
       router.push('/dashboard');
     } catch (error) {
-      alert('Login falhou!');
+      toast.error('Credenciais inválidas. Tente novamente.');
     }
   };
 
@@ -28,7 +30,7 @@ export default function LoginPage() {
     <Container className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md p-8 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-gray-800">Event Manager</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">Poggo 👾</h1>
           <p className="mt-2 text-gray-500">Faça login para acessar sua conta</p>
         </div>
 
