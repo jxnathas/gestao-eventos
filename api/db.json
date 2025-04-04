@@ -1,21 +1,36 @@
 {
-    "users": [
-      {
-        "id": 1,
-        "email": "admin@example.com",
-        "password": "123456",
-        "name": "Admin",
-        "role": "admin"
-      }
-    ],
-    "events": [],
-    "sectors": [],
-    "coupons": [],
-    "tickets": [],
-    "settings": {
-      "storeColors": {
-        "primary": "#3B82F6",
-        "secondary": "#10B981"
-      }
+  "users": [
+    {
+      "id": 1,
+      "name": "Fulano Silva",
+      "document": "123.456.789-00",
+      "establishmentName": "Eventos Ltda",
+      "tradingName": "Festas Inc",
+      "email": "admin@example.com",
+      "password": "123456",
+      "phone": "(11) 99999-9999",
+      "role": "admin"
+    },
+    {
+      "name": "teste",
+      "document": "000000000000000",
+      "establishmentName": "Cozinha Ltda",
+      "tradingName": "Restaurante do Mané",
+      "email": "teste@teste.com",
+      "password": "123456",
+      "phone": "00000000000000",
+      "role": "user",
+      "id": 2
     }
+  ],
+  "events": [],
+  "sectors": [],
+  "coupons": [],
+  "tickets": [],
+  "settings": {
+    "storeColors": {
+      "primary": "#3B82F6",
+      "secondary": "#10B981"
+    }
+  }
 }

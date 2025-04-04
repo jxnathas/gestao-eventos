@@ -5,7 +5,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export const Button = ({ variant = 'primary', className = '', ...props }: ButtonProps) => {
-  const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2';
+  const baseClasses = 'w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2';
 
   const variants = {
     primary: 'bg-primary text-white hover:bg-primary/90 focus:ring-primary/50',
