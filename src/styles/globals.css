@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: 10 132 255;
+    --secondary: 40 205 130;
+    --background: 242 242 247;
+  }
+  .bg-primary {
+    background-color: rgb(var(--primary));
+  }
+  .hover\:bg-primary\/90:hover {
+    background-color: rgba(var(--primary), 0.9);
+  }
+  .focus\:ring-primary\/50:focus {
+    --tw-ring-color: rgba(var(--primary), 0.5);
+  }
+
+  .bg-secondary {
+    background-color: rgb(var(--secondary));
+  }
+  .hover\:bg-secondary\/90:hover {
+    background-color: rgba(var(--secondary), 0.9);
+  }
+  .focus\:ring-secondary\/50:focus {
+    --tw-ring-color: rgba(var(--secondary), 0.5);
+  }
+
+  body {
+    @apply bg-[rgb(var(--background))];
+  }
+}
