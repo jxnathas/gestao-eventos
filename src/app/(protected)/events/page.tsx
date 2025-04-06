@@ -13,6 +13,13 @@ type Event = {
   name: string;
   date: string;
   description: string;
+  lotes: Array<{
+    id: number;
+    name: string;
+    startDate: string;
+    endDate: string;
+    discount: number;
+  }>;
 };
 
 export default function EventsPage() {

@@ -6,10 +6,13 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import toast from 'react-hot-toast';
+import { Modal } from '@/components/ui/Modal';
+import { useState } from 'react';
 
 export default function LoginPage() {
   const { login } = useAuthStore();
   const router = useRouter();
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +78,33 @@ export default function LoginPage() {
             Cadastre-se
           </button>
         </div>
+        <div className="text-center text-sm text-gray-500">
+          <button
+            onClick={() => setIsForgotPasswordOpen(true)}
+            className="text-primary hover:underline"
+          >
+            Esqueceu sua senha?
+          </button>
+        </div>
       </Card>
+
+      <Modal
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+        title="Resetar Senha"
+      >
+        <form className="space-y-4">
+          <Input
+            name="email"
+            type="email"
+            label="Email cadastrado"
+            required
+          />
+          <Button type="submit" variant="primary" className="w-full">
+            Enviar Link
+          </Button>
+        </form>
+      </Modal>
     </Container>
   );
 }
