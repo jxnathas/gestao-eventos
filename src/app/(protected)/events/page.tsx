@@ -7,6 +7,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
+import { withAuth } from '@/components/hoc/withAuth';
 
 type Event = {
   id?: number;
@@ -22,7 +23,7 @@ type Event = {
   }>;
 };
 
-export default function EventsPage() {
+function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
@@ -121,3 +122,5 @@ export default function EventsPage() {
     </Section>
   );
 }
+
+export default withAuth(EventsPage);

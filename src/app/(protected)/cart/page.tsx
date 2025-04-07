@@ -1,10 +1,11 @@
 'use client';
+import { withAuth } from '@/components/hoc/withAuth';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Section } from '@/components/ui/Section';
 import { useCartStore } from '@/lib/stores/cartStore';
 
-export default function CartPage() {
+function CartPage() {
   const { items, removeItem } = useCartStore();
 
   return (
@@ -32,3 +33,5 @@ export default function CartPage() {
     </Section>
   );
 }
+
+export default withAuth(CartPage);

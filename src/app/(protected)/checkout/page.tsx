@@ -1,10 +1,11 @@
 'use client';
 
+import { withAuth } from "@/components/hoc/withAuth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 
-export default function CheckoutPage() {
+function CheckoutPage() {
   return (
     <Section className="py-12">
       <Card className="max-w-md mx-auto p-6">
@@ -27,3 +28,5 @@ export default function CheckoutPage() {
     </Section>
   );
 }
+
+export default withAuth(CheckoutPage);

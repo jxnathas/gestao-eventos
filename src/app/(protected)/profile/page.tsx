@@ -1,11 +1,12 @@
 'use client';
+import { withAuth } from '@/components/hoc/withAuth';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Section } from '@/components/ui/Section';
 import { useAuthStore } from '@/lib/stores/authStore';
 
-export default function ProfilePage() {
+function ProfilePage() {
   const { user } = useAuthStore();
 
   return (
@@ -24,3 +25,5 @@ export default function ProfilePage() {
     </Section>
   );
 }
+
+export default withAuth(ProfilePage); 

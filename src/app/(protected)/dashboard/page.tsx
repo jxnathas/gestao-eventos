@@ -5,11 +5,11 @@ import React from 'react'
 import { Card } from '@/components/ui/Card'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
-
 import { useAuthStore } from '@/lib/stores/authStore'
 import { Header } from '@/components/ui/Header';
+import { withAuth } from '@/components/hoc/withAuth';
 
-export default function DashboardPage() {
+function DashboardPage() {
     const { user } = useAuthStore();
 
     return (
@@ -48,3 +48,4 @@ export default function DashboardPage() {
     );
 }
 
+export default withAuth(DashboardPage);

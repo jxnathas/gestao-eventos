@@ -1,11 +1,12 @@
 'use client';
 
+import { withAuth } from "@/components/hoc/withAuth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Section } from "@/components/ui/Section";
 
-export default function SettingsPage() {
+function SettingsPage() {
   return (
     <Section>
       <Card className="p-6">
@@ -32,3 +33,5 @@ export default function SettingsPage() {
     </Section>
   );
 }
+
+export default withAuth(SettingsPage); 

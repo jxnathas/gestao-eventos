@@ -7,6 +7,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
+import { withAuth } from '@/components/hoc/withAuth';
 
 type Coupon = {
   id?: number;
@@ -15,7 +16,7 @@ type Coupon = {
   validUntil: string;
 };
 
-export default function CouponsPage() {
+function CouponsPage() {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCoupon, setCurrentCoupon] = useState<Coupon | null>(null);
@@ -116,3 +117,5 @@ export default function CouponsPage() {
     </Section>
   );
 }
+
+export default withAuth(CouponsPage);

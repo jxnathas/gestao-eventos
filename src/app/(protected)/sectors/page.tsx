@@ -7,8 +7,9 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
+import { withAuth } from '@/components/hoc/withAuth';
 
-export default function SectorsPage() {
+function SectorsPage() {
   const [sectors, setSectors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSector, setCurrentSector] = useState(null);
@@ -106,3 +107,5 @@ export default function SectorsPage() {
     </Section>
   );
 }
+
+export default withAuth(SectorsPage);
