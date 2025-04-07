@@ -1,21 +1,20 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://localhost:3002'; 
+const URL = 'http://localhost:3002';
 export const socket = io(URL, {
   autoConnect: false,
-  reconnectionAttempts: 3,
+  reconnection: true,
+  reconnectionAttempts: 5,
   reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
 });
 
-type PaymentData = {
-  id: string;
-  status: 'approved' | 'rejected';
-  amount: number;
-};
-
-
 export function setupSocketListeners() {
-  socket.on('payment_approved', (data: PaymentData) => {
-    console.log('Pagamento aprovado:', data);
+  socket.on('connect', () => {
+    console.log('Conectado:', socket.id);
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('Desconectado:', reason);
   });
 }

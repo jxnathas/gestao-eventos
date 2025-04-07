@@ -1,23 +1,27 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/authStore';
 
-export function withAuth(Component: React.ComponentType) {
+export default function withAuth(Component: React.ComponentType) {
   return function ProtectedRoute(props: any) {
     const router = useRouter();
-    const { user, isLoading } = useAuthStore();
+    const { user, isInitialized } = useAuthStore();
 
     useEffect(() => {
-      if (!isLoading && !user) {
+      if (isInitialized && !user) {
         router.push('/login');
       }
-    }, [user, isLoading, router]);
+    }, [user, isInitialized, router]);
 
-    if (isLoading || !user) {
-      return <div>Carregando...</div>;
+    if (!isInitialized) {
+      return (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
+        </div>
+      );
     }
 
-    return <Component {...props} />;
+    return user ? <Component {...props} /> : null;
   };
 }

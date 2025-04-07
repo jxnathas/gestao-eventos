@@ -9,6 +9,14 @@ const io = new Server(server, {
   }
 });
 
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (token === 'fake-jwt-token') { 
+    return next();
+  }
+  return next(new Error('Não autorizado'));
+});
+
 io.on('connection', (socket) => {
   console.log('Cliente conectado:', socket.id);
 

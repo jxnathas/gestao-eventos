@@ -1,22 +1,29 @@
-"use client";
+'use client';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/lib/stores/authStore';
 import { socket } from '@/lib/socket/socket';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { token, user, logout } = useAuthStore();
+  const { token, initializeAuth } = useAuthStore();
 
   useEffect(() => {
-    const token = localStorage.getItem('auth-token');
-    if (token) {
-      useAuthStore.setState({ token });
+    initializeAuth();
+
+    if (token && !socket.connected) {
+      socket.auth = { token };
       socket.connect();
     }
 
-    return () => {
-      socket.disconnect();
+    const onConnectError = (err: Error) => {
+      console.error('Falha na conexão:', err);
     };
-  }, []);
+
+    socket.on('connect_error', onConnectError);
+
+    return () => {
+      socket.off('connect_error', onConnectError);
+    };
+  }, [token, initializeAuth]);
 
   return <>{children}</>;
 }

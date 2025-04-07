@@ -1,12 +1,11 @@
 'use client';
 import "@/styles/globals.css";
 import { Providers } from "./providers";
-import { useAuthStore } from "@/lib/stores/authStore";
 import { useEffect, useState } from "react";
+import { SocketManager } from "@/components/SocketManager";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
-  const { isLoading } = useAuthStore();
 
   useEffect(() => {
     setIsMounted(true);
@@ -15,12 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body>
-        {!isMounted ? null : isLoading ? (
+        {!isMounted ? (
           <div className="fixed inset-0 flex items-center justify-center bg-white">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-primary" />
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
           </div>
         ) : (
           <Providers>
+            <SocketManager />
             {children}
           </Providers>
         )}

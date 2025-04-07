@@ -7,7 +7,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
-import { withAuth } from '@/components/hoc/withAuth';
+import withAuth from '@/components/hoc/withAuth';
 
 type Event = {
   id?: number;
