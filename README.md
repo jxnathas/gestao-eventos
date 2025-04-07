@@ -15,7 +15,6 @@ bun install
 ## Como executar
 Frontend
 ```bash
-
 npm run dev
 # or
 yarn dev
@@ -33,7 +32,6 @@ yarn mock
 pnpm mock
 # or
 bun mock
-```
 ```
 web-socket-server
 ```bash
