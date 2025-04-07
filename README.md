@@ -13,6 +13,7 @@ bun install
 ```
 
 ## Como executar
+
 Frontend
 ```bash
 npm run dev
@@ -23,6 +24,7 @@ pnpm dev
 # or
 bun dev
 ```
+
 Mock server
 ```bash
 npm run mock
@@ -33,6 +35,7 @@ pnpm mock
 # or
 bun mock
 ```
+
 web-socket-server
 ```bash
 npm run socket

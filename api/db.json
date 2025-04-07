@@ -23,7 +23,20 @@
       "id": 2
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": 1,
+      "name": "Show de Rock",
+      "date": "2023-12-15T20:00:00Z",
+      "location": "São Paulo, SP"
+    },
+    {
+      "id": 2,
+      "name": "Festival Gastronômico",
+      "date": "2023-12-20T18:00:00Z",
+      "location": "Rio de Janeiro, RJ"
+    }
+  ],
   "sectors": [],
   "coupons": [],
   "tickets": [],
@@ -34,8 +47,9 @@
     }
   },
   "metrics": {
-    "title": "",
-    "value": 0,
-    "link": ""
+    "totalEvents": 15,
+    "activeEvents": 5,
+    "ticketsSold": 342,
+    "revenue": 28500
   }
 }
