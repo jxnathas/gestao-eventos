@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
+import { Header } from '@/components/ui/Header';
 
 type Event = {
   id?: number;
@@ -47,79 +48,91 @@ function EventsPage() {
   };
 
   return (
-    <Section>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={currentEvent ? 'Editar Evento' : 'Criar Evento'}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input name="name" label="Nome" defaultValue={currentEvent?.name} required />
-          <Input
-            name="date"
-            type="datetime-local"
-            label="Data e Hora"
-            defaultValue={currentEvent?.date}
-            required
-          />
-          <Input
-            name="description"
-            label="Descrição"
-            as="textarea"
-            defaultValue={currentEvent?.description}
-          />
-          <Button type="submit" variant="primary" className="w-full">
-            Salvar
-          </Button>
-        </form>
-      </Modal>
+    <>
+      <Header />
+      <Section className='pt-3'>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={currentEvent ? 'Editar Evento' : 'Criar Evento'}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input name="name" label="Nome" defaultValue={currentEvent?.name} required />
+            <Input
+              name="date"
+              type="datetime-local"
+              label="Data e Hora"
+              defaultValue={currentEvent?.date}
+              required />
+            <Input
+              name="description"
+              label="Descrição"
+              as="textarea"
+              defaultValue={currentEvent?.description} />
+            <Button type="submit" variant="primary" className="w-full">
+              Salvar
+            </Button>
+          </form>
+        </Modal>
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Eventos</h1>
-        <Button
-          variant="primary"
-          onClick={() => {
+        <Card>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  window.location.href = '/dashboard';
+              }}
+              >
+               {'<'}
+              </Button>
+              <h1 className="text-2xl font-semibold">Eventos</h1>
+            </div>
+          </div>
+
+          <Button
+              variant="primary"
+              onClick={() => {
             setCurrentEvent(null);
             setIsModalOpen(true);
-          }}
-        >
-          Criar Evento
-        </Button>
-      </div>
+              } }
+            >
+              Criar Evento
+            </Button>
 
-      <Card>
-        <DataTable
-          headers={['Nome', 'Data', 'Ações']}
-          data={events.map((event) => [
-            event.name,
-            new Date(event.date).toLocaleString(),
-            <div key={event.id} className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setCurrentEvent(event);
-                  setIsModalOpen(true);
-                }}
-              >
-                Editar
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  if (confirm('Excluir este evento?')) {
-                    api.delete(`/events/${event.id}`).then(() => window.location.reload());
-                  }
-                }}
-              >
-                Excluir
-              </Button>
-            </div>,
-          ])}
-        />
-      </Card>
-    </Section>
+          <DataTable
+            headers={['Nome', 'Data', 'Ações']}
+            data={events.map((event) => [
+              event.name,
+              new Date(event.date).toLocaleString(),
+              <div key={event.id} className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentEvent(event);
+                    setIsModalOpen(true);
+                  } }
+                >
+                  Editar
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (confirm('Excluir este evento?')) {
+                      api.delete(`/events/${event.id}`).then(() => window.location.reload());
+                    }
+                  } }
+                >
+                  Excluir
+                </Button>
+              </div>,
+            ])} />
+        </Card>
+      </Section>
+    </>
   );
 }
 

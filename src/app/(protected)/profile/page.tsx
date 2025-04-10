@@ -1,5 +1,5 @@
 'use client';
-import { withAuth } from '@/components/hoc/withAuth';
+import withAuth from '@/components/hoc/withAuth';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';

@@ -1,6 +1,5 @@
 'use client';
-
-import { withAuth } from "@/components/hoc/withAuth";
+import withAuth from "@/components/hoc/withAuth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
@@ -20,8 +19,8 @@ function SettingsPage() {
           <div>
             <h3 className="font-medium mb-2">Cores</h3>
             <div className="flex gap-4">
-              <ColorPicker name="primaryColor" label="Primária" defaultValue="#3B82F6" />
-              <ColorPicker name="secondaryColor" label="Secundária" defaultValue="#10B981" />
+              {/* <ColorPicker name="primaryColor" label="Primária" defaultValue="#3B82F6" />
+              <ColorPicker name="secondaryColor" label="Secundária" defaultValue="#10B981" /> */}
             </div>
           </div>
 

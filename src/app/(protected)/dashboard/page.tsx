@@ -5,7 +5,6 @@ import api from '@/lib/api/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import withAuth from '@/components/hoc/withAuth';
-import { Header } from '@/components/ui/Header';
 import { socket } from '@/lib/socket/socket';
 
 type DashboardMetrics = {
@@ -61,7 +60,6 @@ function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <Header />
       <h1 className="text-2xl font-bold">Bem-vindo, {user?.name || 'Administrador'}!</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

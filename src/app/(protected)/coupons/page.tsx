@@ -7,7 +7,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
-import { withAuth } from '@/components/hoc/withAuth';
+import withAuth from '@/components/hoc/withAuth';
 
 type Coupon = {
   id?: number;
@@ -70,6 +70,16 @@ function CouponsPage() {
 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Cupons</h1>
+
+        <Button
+          variant="ghost"
+          onClick={() => {
+            window.location.href = '/dashboard';
+          }}
+        >
+          {'<'}
+        </Button>
+        
         <Button
           variant="primary"
           onClick={() => {
