@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/lib/api/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -7,104 +7,137 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
-import { withAuth } from '@/components/hoc/withAuth';
+import withAuth from '@/components/hoc/withAuth';
+import { Header } from '@/components/ui/Header';
+
+type Sector = {
+  id?: number;
+  name: string;
+  capacity: number;
+  price: number;
+};
 
 function SectorsPage() {
-  const [sectors, setSectors] = useState([]);
+  const [sectors, setSectors] = useState<Sector[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentSector, setCurrentSector] = useState(null);
+  const [currentSector, setCurrentSector] = useState<Sector | null>(null);
 
-  const handleSave = async (e) => {
+  useEffect(() => {
+    api.get('/sectors').then((res) => setSectors(res.data));
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const payload = Object.fromEntries(formData);
 
     if (currentSector?.id) {
-
-      await api.patch(`/sectors/${currentSector.id}`, data);
-
+      await api.patch(`/sectors/${currentSector.id}`, payload);
     } else {
-      await api.post('/sectors', data);
+      await api.post('/sectors', payload);
     }
     setIsModalOpen(false);
-
     window.location.reload();
   };
 
   return (
-    <Section>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <form onSubmit={handleSave} className="space-y-4">
-          <Input
-            name="name"
-            label="Nome do Setor"
-            defaultValue={currentSector?.name}
-            required
-          />
-          <Input
-            name="capacity"
-            type="number"
-            label="Capacidade"
-            defaultValue={currentSector?.capacity}
-            required
-          />
-          <Input
-            name="price"
-            type="number"
-            step="0.01"
-            label="Preço (R$)"
-            defaultValue={currentSector?.price}
-            required
-          />
-          <Button type="submit" variant="primary">
-            Salvar
-          </Button>
-        </form>
-      </Modal>
-
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Setores</h1>
-        <Button
-          variant="primary"
-          onClick={() => {
-            setCurrentSector(null);
-            setIsModalOpen(true);
-          }}
+    <>
+      <Header />
+      <Section className="pt-3">
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={currentSector ? 'Editar Setor' : 'Criar Setor'}
         >
-          Criar Setor
-        </Button>
-      </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              name="name"
+              label="Nome do Setor"
+              defaultValue={currentSector?.name}
+              required
+            />
+            <Input
+              name="capacity"
+              type="number"
+              label="Capacidade"
+              defaultValue={currentSector?.capacity}
+              required
+            />
+            <Input
+              name="price"
+              type="number"
+              step="0.01"
+              label="Preço (R$)"
+              defaultValue={currentSector?.price}
+              required
+            />
+            <Button type="submit" variant="primary" className="w-full">
+              Salvar
+            </Button>
+          </form>
+        </Modal>
 
-      <Card>
-        <DataTable
-          headers={['Nome', 'Capacidade', 'Preço', 'Ações']}
-          data={sectors.map((sector) => [
-            sector.name,
-            sector.capacity,
-            `R$ ${sector.price.toFixed(2)}`,
-            <div key={sector.id} className="flex gap-2">
+        <Card>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
-                size="sm"
                 onClick={() => {
-                  setCurrentSector(sector);
-                  setIsModalOpen(true);
+                  window.location.href = '/dashboard';
                 }}
               >
-                Editar
+                {'<'}
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => api.delete(`/sectors/${sector.id}`).then(() => window.location.reload())}
-              >
-                Excluir
-              </Button>
-            </div>,
-          ])}
-        />
-      </Card>
-    </Section>
+              <h1 className="text-2xl font-semibold">Setores</h1>
+            </div>
+          </div>
+
+          <Button
+            variant="primary"
+            onClick={() => {
+              setCurrentSector(null);
+              setIsModalOpen(true);
+            }}
+          >
+            Criar Setor
+          </Button>
+
+          <DataTable
+            headers={['Nome', 'Capacidade', 'Preço', 'Ações']}
+            data={sectors.map((sector) => [
+              sector.name,
+              sector.capacity,
+              `R$ ${sector.price}`,
+              <div key={sector.id} className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentSector(sector);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (confirm('Excluir este setor?')) {
+                      api.delete(`/sectors/${sector.id}`).then(() =>
+                        window.location.reload()
+                      );
+                    }
+                  }}
+                >
+                  Excluir
+                </Button>
+              </div>,
+            ])}
+          />
+        </Card>
+      </Section>
+    </>
   );
 }
 

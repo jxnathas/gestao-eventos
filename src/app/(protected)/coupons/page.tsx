@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
+import { Header } from '@/components/ui/Header';
 
 type Coupon = {
   id?: number;
@@ -40,91 +41,95 @@ function CouponsPage() {
   };
 
   return (
-    <Section>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={currentCoupon ? 'Editar Cupom' : 'Criar Cupom'}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input name="code" label="Código" defaultValue={currentCoupon?.code} required />
-          <Input
-            name="discount"
-            type="number"
-            label="Desconto (%)"
-            defaultValue={currentCoupon?.discount}
-            required
-          />
-          <Input
-            name="validUntil"
-            type="date"
-            label="Válido até"
-            defaultValue={currentCoupon?.validUntil}
-            required
-          />
-          <Button type="submit" variant="primary" className="w-full">
-            Salvar
+    <>
+      <Header />
+      <Section className="pt-3">
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={currentCoupon ? 'Editar Cupom' : 'Criar Cupom'}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input name="code" label="Código" defaultValue={currentCoupon?.code} required />
+            <Input
+              name="discount"
+              type="number"
+              label="Desconto (%)"
+              defaultValue={currentCoupon?.discount}
+              required
+            />
+            <Input
+              name="validUntil"
+              type="date"
+              label="Válido até"
+              defaultValue={currentCoupon?.validUntil}
+              required
+            />
+            <Button type="submit" variant="primary" className="w-full">
+              Salvar
+            </Button>
+          </form>
+        </Modal>
+
+        <Card>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  window.location.href = '/dashboard';
+                }}
+              >
+                {'<'}
+              </Button>
+              <h1 className="text-2xl font-semibold">Cupons</h1>
+            </div>
+          </div>
+
+          <Button
+            variant="primary"
+            onClick={() => {
+              setCurrentCoupon(null);
+              setIsModalOpen(true);
+            }}
+          >
+            Criar Cupom
           </Button>
-        </form>
-      </Modal>
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Cupons</h1>
-
-        <Button
-          variant="ghost"
-          onClick={() => {
-            window.location.href = '/dashboard';
-          }}
-        >
-          {'<'}
-        </Button>
-        
-        <Button
-          variant="primary"
-          onClick={() => {
-            setCurrentCoupon(null);
-            setIsModalOpen(true);
-          }}
-        >
-          Criar Cupom
-        </Button>
-      </div>
-
-      <Card>
-        <DataTable
-          headers={['Código', 'Desconto', 'Validade', 'Ações']}
-          data={coupons.map((coupon) => [
-            coupon.code,
-            `${coupon.discount}%`,
-            new Date(coupon.validUntil).toLocaleDateString(),
-            <div key={coupon.id} className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setCurrentCoupon(coupon);
-                  setIsModalOpen(true);
-                }}
-              >
-                Editar
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  if (confirm('Excluir este cupom?')) {
-                    api.delete(`/coupons/${coupon.id}`).then(() => window.location.reload());
-                  }
-                }}
-              >
-                Excluir
-              </Button>
-            </div>,
-          ])}
-        />
-      </Card>
-    </Section>
+          <DataTable
+            headers={['Código', 'Desconto', 'Validade', 'Ações']}
+            data={coupons.map((coupon) => [
+              coupon.code,
+              `${coupon.discount}%`,
+              new Date(coupon.validUntil).toLocaleDateString(),
+              <div key={coupon.id} className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentCoupon(coupon);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (confirm('Excluir este cupom?')) {
+                      api.delete(`/coupons/${coupon.id}`).then(() => window.location.reload());
+                    }
+                  }}
+                >
+                  Excluir
+                </Button>
+              </div>,
+            ])}
+          />
+        </Card>
+      </Section>
+    </>
   );
 }
 
