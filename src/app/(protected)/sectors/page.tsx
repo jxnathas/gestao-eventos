@@ -9,13 +9,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
-
-type Sector = {
-  id?: number;
-  name: string;
-  capacity: number;
-  price: number;
-};
+import type { Sector } from '@/types';
 
 function SectorsPage() {
   const [sectors, setSectors] = useState<Sector[]>([]);

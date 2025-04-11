@@ -1,22 +1,8 @@
 import { create } from "zustand";
 import { socket } from "../socket/socket";
+import { AuthState } from "@/types";
 
-type User = {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'user';
-};
 
-type AuthState = {
-  user: User | null;
-  token: string | null;
-  isLoading: boolean;
-  isInitialized: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
-  initializeAuth: () => Promise<void>;
-};
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,

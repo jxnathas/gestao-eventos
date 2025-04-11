@@ -9,20 +9,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
-
-type Event = {
-  id?: number;
-  name: string;
-  date: string;
-  description: string;
-  lotes: Array<{
-    id: number;
-    name: string;
-    startDate: string;
-    endDate: string;
-    discount: number;
-  }>;
-};
+import type { Event } from '@/types';
 
 function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);

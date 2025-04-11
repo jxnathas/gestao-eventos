@@ -1,16 +1,5 @@
 import { create } from 'zustand';
-
-type CartItem = {
-  eventId: number;
-  sectorId: number;
-  quantity: number;
-};
-
-type CartState = {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (eventId: number, sectorId: number) => void;
-};
+import { CartState } from '@/types';
 
 export const useCartStore = create<CartState>((set) => ({
   items: [],
