@@ -6,15 +6,19 @@ import api from '@/lib/api/api';
 import { notFound } from 'next/navigation';
 import router from 'next/router';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Event } from '@/types/events';
+import React from 'react';
 
-export default function EventDetailsPage({ params }: { params: { id: string } }) {
+export default function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
+  const { id } = React.use(params);
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await api.get(`/events/${params.id}?_embed=sectors`);
+        const response = await api.get(`/events/${id}?_embed=sectors`);
         setEvent(response.data);
       } catch (error) {
         console.error('Erro ao carregar evento:', error);
@@ -23,7 +27,7 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
     };
 
     fetchEvent();
-  }, [params.id]);
+  }, [id]);
 
   if (!event) {
     return (

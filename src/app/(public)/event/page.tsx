@@ -79,7 +79,7 @@ const EventCard = ({ event }: { event: Event }) => (
       </div>
 
       <Button
-        href={`/events/${event.id}`}
+        href={`/event/${event.id}`}
         variant="primary"
         className="w-full"
       >

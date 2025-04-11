@@ -2,7 +2,8 @@
 
 @layer base {
   :root {
-    --primary: 10 132 255;
+    --primary: 126 34 206;
+    --primary-light: 168 85 247;
     --secondary: 40 205 130;
     --background: 242 242 247;
     --danger: 239 68 68;
@@ -47,5 +48,6 @@
   
   .action-button:hover {
     @apply transform scale-[1.02] shadow-md;
+    background-color: rgb(var(--primary-light));
   }
 }
