@@ -2,11 +2,21 @@
 import withAuth from "@/components/hoc/withAuth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { ColorPicker } from "@/components/ui/ColorPicker";
 import { Header } from "@/components/ui/Header";
 import { Input } from "@/components/ui/Input";
 import { Section } from "@/components/ui/Section";
+import { useState } from "react";
 
 function SettingsPage() {
+
+  const [theme, setTheme] = useState({
+    primary: '#3B82F6',
+    secondary: '#10B981',
+    background: '#FFFFFF'
+  });
+
+
   return (
     <>
       <Header />
@@ -35,8 +45,25 @@ function SettingsPage() {
             <div>
               <h3 className="font-medium mb-2">Cores</h3>
               <div className="flex gap-4">
-                {/* <ColorPicker name="primaryColor" label="Primária" defaultValue="#3B82F6" />
-                <ColorPicker name="secondaryColor" label="Secundária" defaultValue="#10B981" /> */}
+                <div className="space-y-6">
+                    <ColorPicker
+                    label="Cor Primária"
+                    initialColor={theme.primary}
+                    onColorChange={(color) => setTheme({...theme, primary: color})}
+                  />
+                  
+                  <ColorPicker
+                    label="Cor Secundária"
+                    initialColor={theme.secondary}
+                    onColorChange={(color) => setTheme({...theme, secondary: color})}
+                  />
+                  
+                  <ColorPicker
+                    label="Cor de Fundo"
+                    initialColor={theme.background}
+                    onColorChange={(color) => setTheme({...theme, background: color})}
+                  />
+                </div>
               </div>
             </div>
 
