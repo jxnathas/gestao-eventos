@@ -47,6 +47,26 @@
       "date": "2025-04-09T20:51",
       "description": "Show de teste",
       "id": 4
+    },
+    {
+      "id": "5",
+      "name": "Festival de Música",
+      "date": "2023-12-15T20:00:00Z",
+      "location": "Parque de Exposições, São Paulo",
+      "description": "O maior festival de música do ano com 5 palcos e 20 bandas internacionais.",
+      "bannerUrl": "/music-festival.jpg",
+      "sectors": [
+        {
+          "id": "1",
+          "name": "Pista",
+          "price": 150.00
+        },
+        {
+          "id": "2",
+          "name": "Camarote",
+          "price": 350.00
+        }
+      ]
     }
   ],
   "sectors": [
