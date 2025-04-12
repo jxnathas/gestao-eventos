@@ -2,10 +2,10 @@
 import api from '@/lib/api/api';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Container } from '@/components/ui/Container';
 import type { Event } from '@/types';
+import { ButtonLink } from '@/components/ui/ButtonLink';
 
 export default function PublicEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -78,13 +78,13 @@ const EventCard = ({ event }: { event: Event }) => (
         </div>
       </div>
 
-      <Button
+      <ButtonLink
         href={`/event/${event.id}`}
         variant="primary"
         className="w-full"
       >
         Ver Detalhes
-      </Button>
+      </ButtonLink>
     </div>
   </Card>
 );

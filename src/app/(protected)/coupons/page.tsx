@@ -9,13 +9,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
-
-type Coupon = {
-  id?: number;
-  code: string;
-  discount: number;
-  validUntil: string;
-};
+import type { Coupon } from '@/types';
 
 function CouponsPage() {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -53,7 +47,7 @@ function CouponsPage() {
             <Input name="code" label="Código" defaultValue={currentCoupon?.code} required />
             <Input
               name="discount"
-              type="number"
+              type="text"
               label="Desconto (%)"
               defaultValue={currentCoupon?.discount}
               required
@@ -105,7 +99,7 @@ function CouponsPage() {
               <div key={coupon.id} className="flex gap-2">
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="small"
                   onClick={() => {
                     setCurrentCoupon(coupon);
                     setIsModalOpen(true);
@@ -115,7 +109,7 @@ function CouponsPage() {
                 </Button>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="small"
                   onClick={() => {
                     if (confirm('Excluir este cupom?')) {
                       api.delete(`/coupons/${coupon.id}`).then(() => window.location.reload());

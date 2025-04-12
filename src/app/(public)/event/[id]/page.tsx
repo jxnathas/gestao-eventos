@@ -41,6 +41,19 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
 
   return (
     <Container className="py-8">
+      <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  window.location.href = '/dashboard';
+                }}
+              >
+                {'<'}
+              </Button>
+              <h1 className="text-2xl font-semibold">Cupons</h1>
+            </div>
+        </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <div className="relative h-64 mb-4 rounded-lg overflow-hidden">

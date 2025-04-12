@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import withAuth from '@/components/hoc/withAuth';
 import { socket } from '@/lib/socket/socket';
+import { ButtonLink } from '@/components/ui/ButtonLink';
+import Spinner from '@/components/ui/Spinner';
+import { Event } from '@/types';
 
 type DashboardMetrics = {
   totalEvents: number;
@@ -52,9 +55,7 @@ function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
-      </div>
+     <Spinner className="flex items-center justify-center h-screen" />
     );
   }
 
@@ -109,16 +110,16 @@ const QuickActionsSection = () => (
   <Card className="p-6">
     <h2 className="text-lg font-semibold mb-4">Ações Rápidas</h2>
     <div className="grid grid-cols-2 gap-3">
-      <Button variant="outline" href="/events/create" className="h-24">
+      <Button variant="ghost" href="/events/create" className="h-24">
         Criar Evento
       </Button>
-      <Button variant="outline" href="/coupons/create" className="h-24">
+      <Button variant="ghost" href="/coupons/create" className="h-24">
         Gerar Cupom
       </Button>
-      <Button variant="outline" href="/reports" className="h-24">
+      <Button variant="ghost" href="/reports" className="h-24">
         Ver Relatórios
       </Button>
-      <Button variant="outline" href="/settings" className="h-24">
+      <Button variant="ghost" href="/settings" className="h-24">
         Configurações
       </Button>
     </div>
@@ -126,7 +127,7 @@ const QuickActionsSection = () => (
 );
 
 const RecentEventsSection = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -140,9 +141,9 @@ const RecentEventsSection = () => {
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">Eventos Recentes</h2>
-        <Button variant="ghost" href="/events" size="sm">
+        <ButtonLink variant="ghost" href="/events" size="small">
           Ver Todos
-        </Button>
+        </ButtonLink>
       </div>
       
       {loading ? (
@@ -159,9 +160,9 @@ const RecentEventsSection = () => {
                   {new Date(event.date).toLocaleDateString('pt-BR')}
                 </p>
               </div>
-              <Button variant="ghost" size="sm" href={`/events/${event.id}`}>
+                <ButtonLink variant="ghost" size="small" href={`/event/${event.id}`}>
                 Detalhes
-              </Button>
+                </ButtonLink>
             </div>
           ))}
         </div>

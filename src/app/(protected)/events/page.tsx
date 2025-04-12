@@ -95,7 +95,7 @@ function EventsPage() {
               <div key={event.id} className="flex gap-2">
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="small"
                   onClick={() => {
                     setCurrentEvent(event);
                     setIsModalOpen(true);
@@ -106,7 +106,7 @@ function EventsPage() {
 
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="small"
                   onClick={() => {
                     if (confirm('Excluir este evento?')) {
                       api.delete(`/events/${event.id}`).then(() => window.location.reload());
