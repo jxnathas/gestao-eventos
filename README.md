@@ -70,6 +70,7 @@ bun socket
     /socket (config do WebSocket)
     /stores (Zustand)
   /styles (globals.css)
+  /types
 ```
 
 ## Arquitetura

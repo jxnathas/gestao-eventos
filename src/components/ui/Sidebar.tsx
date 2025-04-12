@@ -1,7 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/Button';
-import Link from 'next/link';
+import { ButtonLink } from './ButtonLink';
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -25,15 +24,14 @@ export const Sidebar = () => {
               const isActive = pathname.startsWith(item.href);
               
               return (
-                <Link href={item.href} key={item.name} passHref legacyBehavior>
-                  <Button
-                    as="a"
-                    variant={isActive ? 'secondary' : 'ghost'}
-                    className={`w-full justify-start ${isActive ? 'bg-gray-100' : ''}`}
-                  >
-                    {item.name}
-                  </Button>
-                </Link>
+                <ButtonLink
+                  key={item.name}
+                  href={item.href}
+                  variant={isActive ? 'secondary' : 'primary'}
+                  className={`w-full justify-start ${isActive ? 'bg-gray-100' : ''}`}
+                >
+                  {item.name}
+                </ButtonLink>
               );
             })}
           </nav>

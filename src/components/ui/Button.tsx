@@ -1,7 +1,9 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'default' | 'small' | 'large';
+  as?: React.ElementType;
 };
 
 export const Button = ({ variant = 'primary', className = '', ...props }: ButtonProps) => {

@@ -27,14 +27,16 @@
     {
       "id": 1,
       "name": "Show de Rock",
-      "date": "2023-12-15T20:00:00Z",
-      "location": "São Paulo, SP"
+      "date": "2025-04-07T20:52",
+      "location": "São Paulo, SP",
+      "description": "Só os headbenga"
     },
     {
       "id": 2,
       "name": "Festival Gastronômico",
-      "date": "2023-12-20T18:00:00Z",
-      "location": "Rio de Janeiro, RJ"
+      "date": "2025-04-11T20:52",
+      "location": "Rio de Janeiro, RJ",
+      "description": "Só comida braba"
     },
     {
       "name": "teste",
@@ -59,12 +61,12 @@
         {
           "id": "1",
           "name": "Pista",
-          "price": 150.00
+          "price": 150
         },
         {
           "id": "2",
           "name": "Camarote",
-          "price": 350.00
+          "price": 350
         }
       ]
     }
