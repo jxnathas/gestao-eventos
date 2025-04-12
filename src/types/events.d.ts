@@ -1,3 +1,4 @@
+import type { User } from './user';
 import type { Sector } from './sector';
   
 export interface Event {
@@ -8,7 +9,9 @@ export interface Event {
     description: string;
     bannerUrl: string;
     sectors: Sector[];
-    batches?: EventBatch[];
+    lotes?: EventLot[];
+    organizerId: User.id;
+    createdAt: string;
 }
   
 export interface EventLot {
@@ -18,10 +21,12 @@ export interface EventLot {
     endDate: string;
     price: number;
     isActive: boolean;
+    eventId: string;
+    createdAt: string;
 }
 
 export type EventWithRelations = Event & {
     sectors: Sector[];
-    batches: EventBatch[];
+    lotes: EventLot[];
     organizer: User;
 }

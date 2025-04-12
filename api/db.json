@@ -29,7 +29,8 @@
       "name": "Show de Rock",
       "date": "2025-04-07T20:52",
       "location": "São Paulo, SP",
-      "description": "Só os headbenga"
+      "description": "Só os headbenga",
+      "organizer": ""
     },
     {
       "id": 2,
@@ -69,12 +70,28 @@
           "price": 350
         }
       ]
+    },
+    {
+      "name": "Pantera Cor de Rosa",
+      "date": "2025-04-12T19:18",
+      "description": "panran panran",
+      "location": "São Paulo, Bahia",
+      "organizer": "defaultUserId",
+      "id": "8sViZ9y"
+    },
+    {
+      "name": "Evento Canônico",
+      "date": "2025-04-12T19:28",
+      "description": "your father must die Miles, so i can...",
+      "location": "Aranhaverso, 07x33",
+      "organizer": "defaultUserId",
+      "id": "B2uIB-R"
     }
   ],
   "sectors": [
     {
       "name": "Pista",
-      "capacity": "600",
+      "capacity": "1000",
       "price": "20.00",
       "id": 1
     },

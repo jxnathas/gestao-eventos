@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { useEffect, useState } from "react";
 import { SocketManager } from "@/components/SocketManager";
+import Spinner from "@/components/ui/Spinner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -15,9 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <body>
         {!isMounted ? (
-          <div className="fixed inset-0 flex items-center justify-center bg-white">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
-          </div>
+            <div className="fixed inset-0 flex items-center justify-center bg-white">
+            <Spinner />
+            </div>
         ) : (
           <Providers>
             <SocketManager />

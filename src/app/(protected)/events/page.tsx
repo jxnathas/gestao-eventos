@@ -31,7 +31,9 @@ function EventsPage() {
       await api.post('/events', payload);
     }
     setIsModalOpen(false);
-    window.location.reload();
+    const updatedEvents = await api.get('/events');
+    setEvents(updatedEvents.data);
+    setIsModalOpen(false);
   };
 
   return (
@@ -43,7 +45,7 @@ function EventsPage() {
           onClose={() => setIsModalOpen(false)}
           title={currentEvent ? 'Editar Evento' : 'Criar Evento'}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
             <Input name="name" label="Nome" defaultValue={currentEvent?.name} required />
             <Input
               name="date"
@@ -54,12 +56,21 @@ function EventsPage() {
             <Input
               name="description"
               label="Descrição"
-              as="textarea"
+              type="textarea"
               defaultValue={currentEvent?.description} />
+            <Input
+              name="location"
+              label="Localização"
+              defaultValue={currentEvent?.location} />
+            <Input
+              name="organizer"
+              type="hidden"
+              label=''
+              defaultValue={currentEvent?.organizerId || 'defaultUserId'} />
             <Button type="submit" variant="primary" className="w-full">
               Salvar
             </Button>
-          </form>
+            </form>
         </Modal>
 
         <Card>

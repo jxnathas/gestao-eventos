@@ -8,7 +8,6 @@ export const Sidebar = () => {
   const navItems = [
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Eventos', href: '/events' },
-    { name: 'Ingressos', href: '/tickets' },
     { name: 'Cupons', href: '/coupons' },
     { name: 'Setores', href: '/sectors' },
     { name: 'Configurações', href: '/settings' },

@@ -30,8 +30,9 @@ function SectorsPage() {
     } else {
       await api.post('/sectors', payload);
     }
+    const updatedSectors = await api.get('/events');
+    setSectors(updatedSectors.data);
     setIsModalOpen(false);
-    window.location.reload();
   };
 
   return (
