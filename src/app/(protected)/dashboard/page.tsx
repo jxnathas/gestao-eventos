@@ -66,7 +66,7 @@ const RecentEventsSection = () => {
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">Eventos Recentes</h2>
-        <ButtonLink variant="ghost" href="/events" size="small">
+        <ButtonLink variant="ghost" href="/my-events" size="small">
           Ver Todos
         </ButtonLink>
       </div>

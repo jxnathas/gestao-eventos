@@ -52,7 +52,9 @@
       "name": "Show de teste",
       "date": "2025-04-09T20:51",
       "description": "Show de teste",
-      "id": 4
+      "id": 4,
+      "location": "teste",
+      "organizer": "defaultUserId"
     },
     {
       "id": "5",

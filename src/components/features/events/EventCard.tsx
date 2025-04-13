@@ -21,7 +21,7 @@ export const EventCard = ({ event }: { event: Event }) => (
         <p className="text-gray-500 mb-3">📍 {event.location}</p>
     
         <ButtonLink
-        href={`/event/${event.id}`}
+        href={`/events/event/${event.id}`}
         variant="primary"
         className="w-full"
         >
