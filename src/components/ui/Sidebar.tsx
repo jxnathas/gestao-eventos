@@ -15,7 +15,7 @@ export const Sidebar = () => {
 
   return (
     <aside className="hidden md:flex md:flex-shrink-0">
-      <div className="flex flex-col w-64 h-screen border-r border-gray-200 bg-white">
+      <div className="flex flex-col w-50 h-screen border-r border-gray-200 bg-white">
         <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
           <nav className="flex-1 px-2 space-y-1">
             {navItems.map((item) => {
@@ -25,7 +25,8 @@ export const Sidebar = () => {
                 <ButtonLink
                   key={item.name}
                   href={item.href}
-                  variant={isActive ? 'secondary' : 'primary'}
+                  size='small'
+                  variant={isActive ? 'ghost' : 'primary'}
                   className={`w-full justify-start ${isActive ? 'bg-gray-100' : ''}`}
                 >
                   {item.name}

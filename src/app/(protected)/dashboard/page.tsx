@@ -5,86 +5,23 @@ import api from '@/lib/api/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import withAuth from '@/components/hoc/withAuth';
-import { socket } from '@/lib/socket/socket';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import Spinner from '@/components/ui/Spinner';
 import { Event } from '@/types';
 
-type DashboardMetrics = {
-  totalEvents: number;
-  activeEvents: number;
-  ticketsSold: number;
-  revenue: number;
-};
-
 function DashboardPage() {
   const { user } = useAuthStore();
-  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const handleTicketSold = (data: any) => {
-      setMetrics(prev => ({
-        ...prev!,
-        ticketsSold: (prev?.ticketsSold || 0) + data.quantity,
-        revenue: (prev?.revenue || 0) + (data.quantity * data.price)
-      }));
-    };
-  
-    socket.on('ticket_sold', handleTicketSold);
-  
-    return () => {
-      socket.off('ticket_sold', handleTicketSold);
-    };
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get('/metrics');
-        setMetrics(response.data);
-      } catch (error) {
-        console.error('Erro ao carregar métricas:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   if (loading) {
     return (
-     <Spinner className="flex items-center justify-center h-screen" />
+      <Spinner className="flex items-center justify-center h-screen" />
     );
   }
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Bem-vindo, {user?.name || 'Administrador'}!</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <MetricCard 
-          title="Eventos Totais" 
-          value={metrics?.totalEvents || 0}
-          icon="🎭"
-        />
-        <MetricCard
-          title="Eventos Ativos"
-          value={metrics?.activeEvents || 0}
-          icon="🔛"
-        />
-        <MetricCard
-          title="Ingressos Vendidos"
-          value={metrics?.ticketsSold || 0}
-          icon="🎟️"
-        />
-        <MetricCard
-          title="Receita Total"
-          value={`R$ ${(metrics?.revenue || 0).toLocaleString('pt-BR')}`}
-          icon="💰"
-        />
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <QuickActionsSection />
@@ -93,18 +30,6 @@ function DashboardPage() {
     </div>
   );
 }
-
-const MetricCard = ({ title, value, icon }: { title: string; value: string | number; icon: string }) => (
-  <Card className="p-4 hover:shadow-md transition-shadow">
-    <div className="flex justify-between items-start">
-      <div>
-        <p className="text-sm text-gray-500">{title}</p>
-        <p className="text-2xl font-bold mt-1">{value}</p>
-      </div>
-      <span className="text-2xl">{icon}</span>
-    </div>
-  </Card>
-);
 
 const QuickActionsSection = () => (
   <Card className="p-6">
@@ -145,26 +70,28 @@ const RecentEventsSection = () => {
           Ver Todos
         </ButtonLink>
       </div>
-      
+
       {loading ? (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary" />
         </div>
       ) : (
         <div className="space-y-4">
-          {events.map((event) => (
-            <div key={event.id} className="flex items-center justify-between p-3 border-b">
-              <div>
-                <h3 className="font-medium">{event.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {new Date(event.date).toLocaleDateString('pt-BR')}
-                </p>
+          {events
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .map((event) => (
+              <div key={event.id} className="flex items-center justify-between p-3 border-b">
+          <div>
+            <h3 className="font-medium">{event.name}</h3>
+            <p className="text-sm text-gray-500">
+              {new Date(event.date).toLocaleDateString('pt-BR')}
+            </p>
+          </div>
+          <ButtonLink variant="ghost" size="small" href={`/event/${event.id}`}>
+            Detalhes
+          </ButtonLink>
               </div>
-                <ButtonLink variant="ghost" size="small" href={`/event/${event.id}`}>
-                Detalhes
-                </ButtonLink>
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </Card>
