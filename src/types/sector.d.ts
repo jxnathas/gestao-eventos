@@ -3,4 +3,5 @@ export interface Sector {
     name: string;
     price: number;
     capacity?: number;
+    sold?: number;
 }

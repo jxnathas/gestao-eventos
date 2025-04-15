@@ -10,15 +10,32 @@ import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
 import type { Coupon } from '@/types';
+import { useAuthStore } from '@/lib/stores/authStore';
 
 function CouponsPage() {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCoupon, setCurrentCoupon] = useState<Coupon | null>(null);
 
+  const userId = useAuthStore.getState().user?.id || 'defaultUserId';
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    api.get('/coupons').then((res) => setCoupons(res.data));
-  }, []);
+    const fetchCoupons = async () => {
+      try {
+        const res = await api.get(`/coupons?organizerId=${userId}`);
+        setCoupons(res.data);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch coupons");
+        console.error(err);
+      }
+    };
+
+    if (userId) {
+      fetchCoupons();
+    }
+  }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

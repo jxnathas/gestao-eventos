@@ -10,15 +10,31 @@ import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
 import type { Event } from '@/types';
+import { useAuthStore } from '@/lib/stores/authStore';
 
 function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
+  const userId = useAuthStore.getState().user?.id || 'defaultUserId';
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    api.get('/events').then((res) => setEvents(res.data));
-  }, []);
+    const fetchEvents = async () => {
+      try {
+        const res = await api.get(`/events?organizerId=${userId}`);
+        setEvents(res.data);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch events");
+        console.error(err);
+      }
+    };
+
+    if (userId) {
+      fetchEvents();
+    }
+  }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +47,7 @@ function EventsPage() {
       await api.post('/events', payload);
     }
     setIsModalOpen(false);
-    const updatedEvents = await api.get('/events');
+    const updatedEvents = await api.get(`/events?organizerId=${userId}`);
     setEvents(updatedEvents.data);
     setIsModalOpen(false);
   };
@@ -63,10 +79,10 @@ function EventsPage() {
               label="Localização"
               defaultValue={currentEvent?.location} />
             <Input
-              name="organizer"
+              name="organizerId"
               type="hidden"
               label=''
-              defaultValue={currentEvent?.organizerId || 'defaultUserId'} />
+              defaultValue={userId} />
             <Button type="submit" variant="primary" className="w-full">
               Salvar
             </Button>

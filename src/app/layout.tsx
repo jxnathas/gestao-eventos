@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="pt-BR">
-      <title>Poggo - Eventos</title>
+      <title>Poggo - Ingressos - Shows - Eventos</title>
       <body>
         {!isMounted ? (
             <div className="fixed inset-0 flex items-center justify-center bg-white">

@@ -10,15 +10,28 @@ import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
 import type { Sector } from '@/types';
+import { useAuthStore } from '@/lib/stores/authStore';
 
 function SectorsPage() {
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSector, setCurrentSector] = useState<Sector | null>(null);
 
+  const userId = useAuthStore.getState().user?.id || 'defaultUserId';
   useEffect(() => {
-    api.get('/sectors').then((res) => setSectors(res.data));
-  }, []);
+    const fetchSectors = async () => {
+      try {
+        const res = await api.get(`/sectors?organizerId=${userId}`);
+        setSectors(res.data);
+      } catch (err) {
+        console.error("Failed to fetch sectors", err);
+      }
+    };
+
+    if (userId) {
+      fetchSectors();
+    }
+  }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

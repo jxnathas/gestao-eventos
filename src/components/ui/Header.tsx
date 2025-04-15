@@ -14,8 +14,8 @@ export const Header = ({ isHome = false }: HeaderProps) => {
     <header className="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50 w-full">
       <div className="w-full px-4 py-3 flex justify-between items-center border-t-8 border-purple-800">
         <div className="flex items-center">
-            <ButtonLink variant='none' href="/" className="text-xl font-bold text-gray-800">
-            Poggo👾Eventos
+            <ButtonLink variant='none' href="/" className="text-xl font-extrabold text-gray-800">
+            Poggo👾
             </ButtonLink>
         </div>
 

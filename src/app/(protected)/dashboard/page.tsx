@@ -54,13 +54,16 @@ const QuickActionsSection = () => (
 const RecentEventsSection = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuthStore();
 
   useEffect(() => {
-    api.get('/events?_limit=3').then((res) => {
+    if (!user?.id) return;
+
+    api.get(`/events?_limit=3&organizerId=${user.id}`).then((res) => {
       setEvents(res.data);
       setLoading(false);
     });
-  }, []);
+  }, [user?.id]);
 
   return (
     <Card className="p-6">

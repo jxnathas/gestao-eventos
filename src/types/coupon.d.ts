@@ -3,5 +3,7 @@ export interface Coupon {
     code: string;
     discount: number;
     validUntil: string;
+    organizerId: string;
+    eventId: string;
+    createdAt: string;
 };
-  

@@ -5,3 +5,5 @@ export * from './sector';
 export * from './coupon';
 export * from './cart';
 export * from './db';
+export * from './ticket';
+export * from './orders';
