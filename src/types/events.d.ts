@@ -1,5 +1,4 @@
-import type { User } from './user';
-import type { Sector } from './sector';
+import { Sector } from './sector';
   
 export interface Event {
     id: string;
@@ -10,8 +9,9 @@ export interface Event {
     bannerUrl: string;
     sectors: Sector[];
     lotes?: EventLot[];
-    organizerId: User.id;
+    organizerId: string;
     createdAt: string;
+    isActive?: boolean;
 }
   
 export interface EventLot {
@@ -20,6 +20,7 @@ export interface EventLot {
     startDate: string;
     endDate: string;
     price: number;
+    discount?: number;
     isActive: boolean;
     eventId: string;
     createdAt: string;

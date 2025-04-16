@@ -2,6 +2,7 @@ export interface Sector {
     id: string;
     name: string;
     price: number;
-    capacity?: number;
+    capacity: number;
+    description: string;
     sold?: number;
 }

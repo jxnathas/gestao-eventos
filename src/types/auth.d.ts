@@ -1,10 +1,4 @@
-export interface User {
-    id: string;
-    email: string;
-    name: string;
-    role: 'admin' | 'user';
-    createdAt?: string;
-}
+import { User } from './user';
   
 export interface AuthState {
     user: User | null;
