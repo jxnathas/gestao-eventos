@@ -10,6 +10,7 @@ export const Sidebar = () => {
     { name: 'Eventos', href: '/my-events' },
     { name: 'Cupons', href: '/coupons' },
     { name: 'Setores', href: '/sectors' },
+    { name: 'Perfil', href: '/profile' },
     { name: 'Configurações', href: '/settings' },
   ];
 

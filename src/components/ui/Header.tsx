@@ -24,7 +24,7 @@ export const Header = ({ isHome = false }: HeaderProps) => {
             <>
               {isHome ? (
                 <>
-                  <ButtonLink href="/dashboard" className="px-3 py-1 text-sm">
+                  <ButtonLink href="/my-events/create" className="px-3 py-1 text-sm">
                     Criar evento
                   </ButtonLink>
                   <ButtonLink href="/my-events" className="px-3 py-1 text-sm ">

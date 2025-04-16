@@ -35,18 +35,18 @@ const QuickActionsSection = () => (
   <Card className="p-6">
     <h2 className="text-lg font-semibold mb-4">Ações Rápidas</h2>
     <div className="grid grid-cols-2 gap-3">
-      <Button variant="ghost" href="/events/create" className="h-24">
+      <ButtonLink variant="ghost" href="/my-events/create" className="h-24">
         Criar Evento
-      </Button>
-      <Button variant="ghost" href="/coupons/create" className="h-24">
+      </ButtonLink>
+      <ButtonLink variant="ghost" href="/coupons/create" className="h-24">
         Gerar Cupom
-      </Button>
-      <Button variant="ghost" href="/reports" className="h-24">
+      </ButtonLink>
+      <ButtonLink variant="ghost" href="/reports" className="h-24">
         Ver Relatórios
-      </Button>
-      <Button variant="ghost" href="/settings" className="h-24">
+      </ButtonLink>
+      <ButtonLink variant="ghost" href="/settings" className="h-24">
         Configurações
-      </Button>
+      </ButtonLink>
     </div>
   </Card>
 );
@@ -90,7 +90,7 @@ const RecentEventsSection = () => {
               {new Date(event.date).toLocaleDateString('pt-BR')}
             </p>
           </div>
-          <ButtonLink variant="ghost" size="small" href={`/event/${event.id}`}>
+          <ButtonLink variant="ghost" size="small" href={`/events/event/${event.id}`}>
             Detalhes
           </ButtonLink>
               </div>
