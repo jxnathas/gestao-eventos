@@ -99,7 +99,7 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
               >
                 <div className="flex justify-between">
                   <h3 className="font-medium">{sector.name}</h3>
-                  <span>R$ {sector.price.toFixed(2)}</span>
+                  <span>R$ {sector.price}</span>
                 </div>
                 {selectedSector === sector.id && (
                   <div className="mt-3">

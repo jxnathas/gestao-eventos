@@ -21,6 +21,17 @@
       "phone": "00000000000000",
       "role": "user",
       "id": 2
+    },
+    {
+      "name": "Rei do Camarote da Silva",
+      "document": "4002892200001",
+      "establishmentName": "Rei del Camarote",
+      "tradingName": "Rei do Camarote",
+      "email": "rei@camarote.com",
+      "password": "654321",
+      "phone": "00 40028922",
+      "role": "user",
+      "id": 3
     }
   ],
   "events": [
@@ -35,7 +46,7 @@
         {
           "id": "1",
           "name": "Pista",
-          "price": 100.00,
+          "price": 100,
           "capacity": 100,
           "sold": 0
         }
@@ -117,6 +128,41 @@
       "location": "Aranhaverso, 07x33333",
       "organizerId": "2",
       "id": "uiGjIfd"
+    },
+    {
+      "name": "Camarote",
+      "date": "2025-04-15T16:59",
+      "description": "Show de teste",
+      "location": "São Paulo, SP",
+      "organizerId": "3",
+      "id": "57_NerA"
+    },
+    {
+      "name": "teste123",
+      "date": "2025-04-16T07:14",
+      "location": "Aranhaverso, 07x33",
+      "description": "Só os headbenga",
+      "organizerId": 3,
+      "sectors": [
+        {
+          "name": "teste",
+          "capacity": 11,
+          "price": 10,
+          "description": "123"
+        }
+      ],
+      "lotes": [
+        {
+          "name": "1231",
+          "startDate": "2025-04-15T22:15",
+          "endDate": "2025-05-11T22:15",
+          "discount": 10000,
+          "price": 0,
+          "isActive": false
+        }
+      ],
+      "id": "WKLSOlP",
+      "bannerUrl": ""
     }
   ],
   "sectors": [
@@ -155,7 +201,15 @@
       "organizerId": 1
     }
   ],
-  "tickets": [],
+  "tickets": [
+    {
+      "eventId": 1,
+      "sectorId": "1",
+      "status": "paid",
+      "userId": 3,
+      "id": 1
+    }
+  ],
   "orders": [
     {
       "id": "order123",
@@ -174,5 +228,13 @@
       "primary": "#3B82F6",
       "secondary": "#10B981"
     }
-  }
+  },
+  "upload": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ]
 }
