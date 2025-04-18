@@ -38,19 +38,11 @@
     {
       "id": 1,
       "name": "Show de Rock",
-      "date": "2025-04-07T20:52",
+      "date": "2025-04-07T23:52",
       "location": "São Paulo, SP",
       "description": "Só os headbenga",
-      "organizerId": "1",
-      "sectors": [
-        {
-          "id": "1",
-          "name": "Pista",
-          "price": 100,
-          "capacity": 100,
-          "sold": 0
-        }
-      ]
+      "organizerId": 1,
+      "bannerUrl": ""
     },
     {
       "id": 2,
@@ -58,7 +50,8 @@
       "date": "2025-04-11T20:52",
       "location": "Rio de Janeiro, RJ",
       "description": "Só comida braba",
-      "organizerId": "1"
+      "organizerId": "1",
+      "bannerUrl": ""
     },
     {
       "name": "teste",
@@ -66,7 +59,8 @@
       "description": "teste",
       "id": 3,
       "location": "teste",
-      "organizerId": "1"
+      "organizerId": "1",
+      "bannerUrl": ""
     },
     {
       "name": "Show de teste",
@@ -74,7 +68,8 @@
       "description": "Show de teste",
       "id": 4,
       "location": "teste",
-      "organizerId": "1"
+      "organizerId": "1",
+      "bannerUrl": ""
     },
     {
       "id": "5",
@@ -83,18 +78,6 @@
       "location": "Parque de Exposições, São Paulo",
       "description": "O maior festival de música do ano com 5 palcos e 20 bandas internacionais.",
       "bannerUrl": "",
-      "sectors": [
-        {
-          "id": "1",
-          "name": "Pista",
-          "price": 150
-        },
-        {
-          "id": "2",
-          "name": "Camarote",
-          "price": 350
-        }
-      ],
       "organizerId": "1"
     },
     {
@@ -143,86 +126,80 @@
       "location": "Aranhaverso, 07x33",
       "description": "Só os headbenga",
       "organizerId": 3,
-      "sectors": [
-        {
-          "name": "teste",
-          "capacity": 11,
-          "price": 10,
-          "description": "123"
-        }
-      ],
-      "lotes": [
-        {
-          "name": "1231",
-          "startDate": "2025-04-15T22:15",
-          "endDate": "2025-05-11T22:15",
-          "discount": 10000,
-          "price": 0,
-          "isActive": false
-        }
-      ],
       "id": "WKLSOlP",
       "bannerUrl": ""
+    },
+    {
+      "name": "teste 737",
+      "date": "2025-04-18T07:37",
+      "location": "teste 7371",
+      "description": "teste 7372",
+      "organizerId": 1,
+      "id": "zX_p8Bw"
     }
   ],
   "sectors": [
     {
+      "id": 1,
       "name": "Pista",
-      "capacity": "1000",
-      "price": "20.00",
+      "eventId": 1,
+      "price": 100,
+      "description": "Setor com visão privilegiada do palco.",
+      "capacity": 1000,
+      "availableTickets": 500
+    },
+    {
+      "id": 2,
+      "name": "Camarote",
+      "eventId": 1,
+      "price": 200,
+      "description": "Camarote com open bar.",
+      "capacity": 200,
+      "availableTickets": 50
+    },
+    {
+      "name": "teste7373",
+      "capacity": 7000,
+      "price": 200,
+      "description": "teste7374",
+      "id": "temp-0",
+      "eventId": "zX_p8Bw"
+    }
+  ],
+  "lots": [
+    {
       "id": 1,
       "eventId": 1,
-      "organizerId": 1
+      "name": "Lote 1",
+      "price": 100,
+      "startDate": "2025-04-01T00:00",
+      "endDate": "2025-04-10T23:59",
+      "availableTickets": 500
     },
     {
-      "name": "VIP",
-      "capacity": "20",
-      "price": "1000.00",
       "id": 2,
       "eventId": 1,
-      "organizerId": 1
+      "name": "Lote 2",
+      "price": 120,
+      "startDate": "2025-04-11T00:00",
+      "endDate": "2025-04-20T23:59",
+      "availableTickets": 300
     },
     {
-      "name": "Camarote",
-      "capacity": "50",
-      "price": "300.00",
-      "id": 3,
-      "eventId": 1,
-      "organizerId": 1
+      "name": "teste7375",
+      "startDate": "2025-04-18T07:38",
+      "endDate": "2025-04-19T07:38",
+      "discount": 7,
+      "price": 0,
+      "isActive": false,
+      "eventId": "zX_p8Bw",
+      "createdAt": "",
+      "id": "temp-0"
     }
   ],
   "coupons": [
-    {
-      "code": "POGGO15",
-      "discount": "15",
-      "validUntil": "2025-04-10",
-      "id": 1,
-      "eventId": 1,
-      "organizerId": 1
-    }
   ],
-  "tickets": [
-    {
-      "eventId": 1,
-      "sectorId": "1",
-      "status": "paid",
-      "userId": 3,
-      "id": 1
-    }
-  ],
-  "orders": [
-    {
-      "id": "order123",
-      "status": "pending_payment"
-    }
-  ],
-  "payments": [
-    {
-      "type": "pix",
-      "qrCode": "000201...",
-      "code": "1234.5678.9123"
-    }
-  ],
+  "payments": [],
   "settings": {
     "storeColors": {
       "primary": "#3B82F6",
@@ -235,6 +212,9 @@
     },
     {
       "id": 2
+    },
+    {
+      "id": 3
     }
   ]
 }

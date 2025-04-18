@@ -7,8 +7,6 @@ export interface Event {
     location: string;
     description: string;
     bannerUrl: string;
-    sectors: Sector[];
-    lotes?: EventLot[];
     organizerId: string;
     createdAt: string;
     isActive?: boolean;
@@ -16,6 +14,7 @@ export interface Event {
   
 export interface EventLot {
     id: string;
+    eventId: string;
     name: string;
     startDate: string;
     endDate: string;
@@ -31,3 +30,5 @@ export type EventWithRelations = Event & {
     lotes: EventLot[];
     organizer: User;
 }
+
+export { Sector };
