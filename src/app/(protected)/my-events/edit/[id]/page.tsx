@@ -53,11 +53,19 @@ function EditEventPage() {
     const fetchEvent = async () => {
       try {
         const res = await api.get(`/events/${eventId}`);
-        setEventData(res.data);
-        setSectors(res.data.sectors || []);
-        setLotes(res.data.lotes || []);
+        const event = res.data;
+
+        setEventData(event);
+
+        const [sectorsRes, lotsRes] = await Promise.all([
+          api.get(`/sectors?eventId=${eventId}`),
+          api.get(`/lots?eventId=${eventId}`),
+        ]);
+
+        setSectors(sectorsRes.data || []);
+        setLotes(lotsRes.data || []);
       } catch (err) {
-        console.error('Failed to fetch event', err);
+        console.error('Failed to fetch event data', err);
       } finally {
         setIsLoading(false);
       }
@@ -89,26 +97,29 @@ function EditEventPage() {
         description: formData.get('description'),
         bannerUrl,
         organizerId: userId,
-        sectors: sectors.map(s => ({
-          id: s.id && typeof s.id === 'string' && s.id.startsWith('temp-') ? undefined : s.id,
-          name: s.name,
-          capacity: Number(s.capacity),
-          price: Number(s.price),
-          description: s.description,
-        })),
-        lotes: lotes.map(l => ({
-          id: l.id && typeof l.id === 'string' && l.id.startsWith('temp-') ? undefined : l.id,
-          name: l.name,
-          startDate: l.startDate,
-          endDate: l.endDate,
-          discount: Number(l.discount),
-          price: Number(l.price),
-          isActive: Boolean(l.isActive),
-        })),
       };
   
       await api.patch(`/events/${eventId}`, eventPayload);
-      window.location.href = `/my-events`;
+  
+      const sectorPromises = sectors.map((sector) => {
+        if (sector.id) {
+          return api.patch(`/sectors/${sector.id}`, sector);
+        } else {
+          return api.post('/sectors', { ...sector, eventId });
+        }
+      });
+      await Promise.all(sectorPromises);
+  
+      const lotPromises = lotes.map((lot) => {
+        if (lot.id) {
+          return api.patch(`/lots/${lot.id}`, lot);
+        } else {
+          return api.post('/lots', { ...lot, eventId });
+        }
+      });
+      await Promise.all(lotPromises);
+  
+      window.location.href = `/my-events/${eventId}`;
     } catch (err) {
       console.error('Failed to update event', err);
     } finally {

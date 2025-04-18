@@ -2,6 +2,7 @@ export interface CartItem {
     eventId: string;
     sectorId: string;
     quantity: number;
+    price: number;
 };
 
 export interface CartState  {
