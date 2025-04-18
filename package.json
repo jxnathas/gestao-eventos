@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "mock": "json-server --watch api/db.json --port 3001",
-    "socket": "node socket-server.js"
+    "socket": "node socket-server.js",
+    "test": "jest"
   },
   "dependencies": {
     "@types/socket.io-client": "^3.0.0",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -35,6 +37,7 @@
     "eslint-config-next": "15.2.4",
     "postcss": "^8.5.3",
     "tailwindcss": "^4",
+    "ts-jest": "^29.3.2",
     "typescript": "^5"
   }
 }
