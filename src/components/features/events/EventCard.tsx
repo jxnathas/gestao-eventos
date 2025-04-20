@@ -2,6 +2,7 @@ import { ButtonLink } from "../../ui/ButtonLink";
 import { Card } from "../../ui/Card";
 import Image from "next/image";
 import type { Event } from '@/types';
+import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 
 export const EventCard = ({ event }: { event: Event }) => (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -16,10 +17,12 @@ export const EventCard = ({ event }: { event: Event }) => (
     </div>
     <div className="p-4">
         <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
-        <p className="text-gray-500 mb-1">
-        📅 {new Date(event.date).toLocaleDateString('pt-BR')}
+        <p className="text-gray-500 mb-1 flex items-center gap-2">
+        <FaCalendarAlt /> {new Date(event.date).toLocaleDateString('pt-BR')}
         </p>
-        <p className="text-gray-500 mb-3">📍 {event.location}</p>
+        <p className="text-gray-500 mb-3 flex items-center gap-2">
+        <FaMapMarkerAlt /> {event.location}
+        </p>
     
         <ButtonLink
         href={`/events/event/${event.id}`}

@@ -8,6 +8,7 @@ import withAuth from '@/components/hoc/withAuth';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import Spinner from '@/components/ui/Spinner';
 import { Event } from '@/types';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 function DashboardPage() {
   const { user } = useAuthStore();
@@ -73,28 +74,23 @@ const RecentEventsSection = () => {
           Ver Todos
         </ButtonLink>
       </div>
-
       {loading ? (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary" />
-        </div>
+        <Spinner />
       ) : (
         <div className="space-y-4">
-          {events
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .map((event) => (
-              <div key={event.id} className="flex items-center justify-between p-3 border-b">
-          <div>
-            <h3 className="font-medium">{event.name}</h3>
-            <p className="text-sm text-gray-500">
-              {new Date(event.date).toLocaleDateString('pt-BR')}
-            </p>
-          </div>
-          <ButtonLink variant="ghost" size="small" href={`/events/event/${event.id}`}>
-            Detalhes
-          </ButtonLink>
+          {events.map((event) => (
+            <div key={event.id} className="flex items-center justify-between p-3 border-b">
+              <div>
+                <h3 className="font-medium">{event.name}</h3>
+                <p className="text-sm text-gray-500 flex items-center gap-2">
+                  <FaCalendarAlt /> {new Date(event.date).toLocaleDateString('pt-BR')}
+                </p>
               </div>
-            ))}
+              <ButtonLink variant="ghost" size="small" href={`/events/event/${event.id}`}>
+                Detalhes
+              </ButtonLink>
+            </div>
+          ))}
         </div>
       )}
     </Card>
