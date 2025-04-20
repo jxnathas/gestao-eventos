@@ -7,14 +7,15 @@ import { Card } from '@/components/ui/Card';
 import withAuth from '@/components/hoc/withAuth';
 import { useAuthStore } from '@/lib/stores/authStore';
 import Link from 'next/link';
-import type { Event, Sector, EventLot } from '@/types';
-import api from '@/lib/api/api';
 import { useState } from 'react';
 import { FormItemContainer } from '../components/Form/FormItemContainer';
 import { FormSection } from '../components/Form/FormSection';
 import { useDynamicFormItems } from '../hooks/useDynamicFormItems';
 import { Button } from "../../../../components/ui/Button";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { createEvent, uploadBanner } from '@/lib/api/eventsApi';
+import { createSectors } from '@/lib/api/sectorsApi';
+import { createLot } from '@/lib/api/lotsApi';
 import {
   eventFields,
   sectorFields,
@@ -22,71 +23,88 @@ import {
   defaultSector,
   defaultLot
 } from '../components/Form/eventFormConfig';
+import { v4 as uuidv4 } from 'uuid';
+import { EventLot } from '@/types/events';
 
 
 function CreateEventPage() {
   const userId = useAuthStore.getState().user?.id || 'defaultUserId';
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const {
     items: sectors,
     addItem: addSector,
     updateItem: updateSector,
     removeItem: removeSector,
-  } = useDynamicFormItems<Sector>([], defaultSector);
+  } = useDynamicFormItems([], defaultSector);
 
   const {
     items: lotes,
     addItem: addLot,
     updateItem: updateLot,
     removeItem: removeLot,
-  } = useDynamicFormItems<EventLot>([], defaultLot);
+  } = useDynamicFormItems([], defaultLot);
+
+  console.log('Sectors:', sectors);
+  console.log('Lotes:', lotes);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       const formData = new FormData(e.currentTarget as HTMLFormElement);
       const bannerFile = formData.get('banner') as File;
       let bannerUrl = '';
-  
+
       if (bannerFile.size > 0) {
-        const uploadFormData = new FormData();
-        uploadFormData.append('file', bannerFile);
-        const uploadResponse = await api.post('/upload', uploadFormData);
-        bannerUrl = uploadResponse.data.url;
+        bannerUrl = await uploadBanner(bannerFile);
       }
 
       const eventPayload = {
-        name: formData.get('name'),
-        date: formData.get('date'),
-        location: formData.get('location'),
-        description: formData.get('description'),
+        id: uuidv4(),
+        name: formData.get('name') as string,
+        date: formData.get('date') as string,
+        location: formData.get('location') as string,
+        description: formData.get('description') as string,
         bannerUrl,
         organizerId: userId,
+        createdAt: new Date().toISOString(),
       };
-  
-      const eventResponse = await api.post('/events', eventPayload);
-      const eventId = eventResponse.data.id;
-  
 
-      const sectorPromises = sectors.map((sector) =>
-        api.post('/sectors', {
+      const createdEvent = await createEvent(eventPayload);
+
+      const sectorPromises = sectors.map((sector) => {
+        console.log('Creating sector:', sector);
+        return createSectors({
           ...sector,
-          eventId,
-        })
-      );
-      await Promise.all(sectorPromises);
-  
-      const lotPromises = lotes.map((lot) =>
-        api.post('/lots', {
+          id: uuidv4(),
+          eventId: createdEvent.id,
+        });
+      });
+
+      try {
+        await Promise.all(sectorPromises);
+      } catch (error) {
+        alert('Failed to create sectors. Please try again.');
+      }
+
+      const lotPromises = lotes.map(async (lot) => {
+        console.log('Creating lot:', lot);
+        const response = await createLot({
           ...lot,
-          eventId,
-        })
-      );
-      await Promise.all(lotPromises);
-  
+          eventId: createdEvent.id,
+          id: uuidv4(),
+        } as EventLot);
+        return response;
+      });
+
+      try {
+        await Promise.all(lotPromises);
+      } catch (error) {
+        alert('Failed to create lots. Please try again.');
+      }
+
       window.location.href = `/my-events`;
     } catch (err) {
       console.error('Failed to create event', err);
@@ -122,7 +140,7 @@ function CreateEventPage() {
           <Section className="py-8">
             <div className="flex items-center gap-4 mb-6">
               <Link href="/my-events">
-                <Button variant="ghost">{'<'}</Button>
+                <Button variant="ghost"><FaArrowLeft/></Button>
               </Link>
               <h1 className="text-2xl font-semibold">Criar Evento</h1>
             </div>
@@ -147,8 +165,8 @@ function CreateEventPage() {
                     {sectorFields.map(field =>
                       renderField(
                         field,
-                        sector[field.name as keyof Sector],
-                        (value) => updateSector(index, field.name as keyof Sector, value),
+                        sector[field.name as keyof typeof sector],
+                        (value) => updateSector(index, field.name as keyof typeof sector, value),
                         field.name === 'description'
                       )
                     )}
@@ -162,8 +180,8 @@ function CreateEventPage() {
                     {lotFields.map(field =>
                       renderField(
                         field,
-                        lot[field.name as keyof EventLot],
-                        (value) => updateLot(index, field.name as keyof EventLot, value)
+                        lot[field.name as keyof typeof lot],
+                        (value) => updateLot(index, field.name as keyof typeof lot, value)
                       )
                     )}
                   </FormItemContainer>

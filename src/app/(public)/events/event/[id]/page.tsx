@@ -9,6 +9,7 @@ import { Event, Sector } from '@/types/events';
 import React from 'react';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { notFound } from 'next/navigation';
+import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft } from 'react-icons/fa';
 
 export default function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<Event | null>(null);
@@ -51,12 +52,12 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
           <Button
             variant="ghost"
             onClick={() => {
-              window.location.href = '/dashboard';
+              window.location.href = '/';
             }}
+            className="flex items-center gap-2"
           >
-            {'<'}
+            <FaArrowLeft /> Voltar
           </Button>
-          <h1 className="text-2xl font-semibold">Cupons</h1>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -72,8 +73,9 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
           </div>
 
           <h1 className="text-2xl font-bold mb-2">{event.name}</h1>
-          <p className="text-gray-500 mb-4">
-            📅 {new Date(event.date).toLocaleDateString('pt-BR', {
+          <p className="text-gray-500 mb-4 flex items-center gap-2">
+            <FaCalendarAlt />{' '}
+            {new Date(event.date).toLocaleDateString('pt-BR', {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
@@ -82,7 +84,9 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
               minute: '2-digit',
             })}
           </p>
-          <p className="text-gray-500 mb-4">📍 {event.location}</p>
+          <p className="text-gray-500 mb-4 flex items-center gap-2">
+            <FaMapMarkerAlt /> {event.location}
+          </p>
 
           <div className="prose max-w-none">
             <p>{event.description}</p>

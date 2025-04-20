@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import api from '@/lib/api/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { DataTable } from '@/components/ui/DataTable';
@@ -9,46 +8,64 @@ import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
-import type { Coupon } from '@/types';
 import { useAuthStore } from '@/lib/stores/authStore';
+import { fetchCoupons, createCoupon, updateCoupon, deleteCoupon } from '@/lib/api/couponsApi';
+import type { Coupon } from '@/types';
 
 function CouponsPage() {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCoupon, setCurrentCoupon] = useState<Coupon | null>(null);
-
-  const userId = useAuthStore.getState().user?.id || 'defaultUserId';
   const [error, setError] = useState<string | null>(null);
 
+  const userId = useAuthStore.getState().user?.id || 'defaultUserId';
+
   useEffect(() => {
-    const fetchCoupons = async () => {
+    const loadCoupons = async () => {
       try {
-        const res = await api.get(`/coupons?organizerId=${userId}`);
-        setCoupons(res.data);
+        const fetchedCoupons = await fetchCoupons({ organizerId: userId });
+        setCoupons(fetchedCoupons);
         setError(null);
       } catch (err) {
-        setError("Failed to fetch coupons");
+        setError('Failed to fetch coupons');
         console.error(err);
       }
     };
 
     if (userId) {
-      fetchCoupons();
+      loadCoupons();
     }
   }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const payload = Object.fromEntries(formData);
+    const payload = Object.fromEntries(formData) as unknown as Omit<Coupon, 'id' | 'createdAt'>;
 
-    if (currentCoupon?.id) {
-      await api.patch(`/coupons/${currentCoupon.id}`, payload);
-    } else {
-      await api.post('/coupons', payload);
+    try {
+      if (currentCoupon?.id) {
+        await updateCoupon(currentCoupon.id, payload);
+      } else {
+        await createCoupon({ ...payload, organizerId: userId });
+      }
+      setIsModalOpen(false);
+      const updatedCoupons = await fetchCoupons({ organizerId: userId });
+      setCoupons(updatedCoupons);
+    } catch (err) {
+      console.error('Failed to save coupon', err);
     }
-    setIsModalOpen(false);
-    window.location.reload();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (confirm('Excluir este cupom?')) {
+      try {
+        await deleteCoupon(id);
+        const updatedCoupons = await fetchCoupons({ organizerId: userId });
+        setCoupons(updatedCoupons);
+      } catch (err) {
+        console.error('Failed to delete coupon', err);
+      }
+    }
   };
 
   return (
@@ -127,11 +144,7 @@ function CouponsPage() {
                 <Button
                   variant="ghost"
                   size="small"
-                  onClick={() => {
-                    if (confirm('Excluir este cupom?')) {
-                      api.delete(`/coupons/${coupon.id}`).then(() => window.location.reload());
-                    }
-                  }}
+                  onClick={() => handleDelete(coupon.id)}
                 >
                   Excluir
                 </Button>

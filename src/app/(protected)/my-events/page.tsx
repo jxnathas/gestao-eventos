@@ -1,15 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
-import api from '@/lib/api/api';
+import { FaArrowLeft } from 'react-icons/fa';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { DataTable } from '@/components/ui/DataTable';
 import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
-import type { Event } from '@/types';
-import { useAuthStore } from '@/lib/stores/authStore';
-import Link from 'next/link';
 import { Section } from '@/components/ui/Section';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { fetchEvents, deleteEvent } from '@/lib/api/eventsApi';
+import Link from 'next/link';
+import type { Event } from '@/types';
 
 function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -17,28 +18,28 @@ function EventsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const loadEvents = async () => {
       try {
-        const res = await api.get(`/events?organizerId=${userId}`);
-        setEvents(res.data);
+        const fetchedEvents = await fetchEvents({ organizerId: userId });
+        setEvents(fetchedEvents);
         setError(null);
       } catch (err) {
-        setError("Failed to fetch events");
+        setError('Failed to fetch events');
         console.error(err);
       }
     };
 
     if (userId) {
-      fetchEvents();
+      loadEvents();
     }
   }, [userId]);
 
   const handleDelete = async (eventId: string) => {
     if (confirm('Excluir este evento?')) {
       try {
-        await api.delete(`/my-events/${eventId}`);
-        const res = await api.get(`/my-events?organizerId=${userId}`);
-        setEvents(res.data);
+        await deleteEvent(eventId);
+        const updatedEvents = await fetchEvents({ organizerId: userId });
+        setEvents(updatedEvents);
       } catch (err) {
         console.error('Failed to delete event', err);
       }
@@ -48,7 +49,7 @@ function EventsPage() {
   return (
     <>
       <Header />
-      <Section className='pt-3'>
+      <Section className="pt-3">
         <Card>
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-4">
@@ -57,8 +58,9 @@ function EventsPage() {
                 onClick={() => {
                   window.location.href = '/dashboard';
                 }}
+                className="flex items-center gap-2"
               >
-                {'<'}
+                <FaArrowLeft />
               </Button>
               <h1 className="text-2xl font-semibold">Eventos</h1>
             </div>

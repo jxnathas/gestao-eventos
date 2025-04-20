@@ -8,7 +8,7 @@ import { Section } from '@/components/ui/Section';
 import { BreadCrumbs } from '@/components/ui/BreadCrumbs';
 import api from '@/lib/api/api';
 import { useAuthStore } from '@/lib/stores/authStore';
-
+import { FaCalendarAlt } from 'react-icons/fa';
 
 const TicketsPage = () => {
 const [tickets, setTickets] = useState<Event[]>([]);
@@ -54,7 +54,9 @@ return (
           tickets.map((ticket) => (
             <Card key={ticket.id}>
               <h3>{ticket.event}</h3>
-              <p>Data: {new Date(ticket.date).toLocaleString()}</p>
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <FaCalendarAlt /> {new Date(ticket.date).toLocaleDateString('pt-BR')}
+              </p>
               <p>Localização: {ticket.location}</p>
             </Card>
           ))

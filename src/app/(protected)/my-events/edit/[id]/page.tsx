@@ -11,7 +11,9 @@ import withAuth from '@/components/hoc/withAuth';
 import { useAuthStore } from '@/lib/stores/authStore';
 import Link from 'next/link';
 import type { Event, Sector, EventLot } from '@/types';
-import api from '@/lib/api/api';
+import { fetchEventById, updateEvent, uploadBanner } from '@/lib/api/eventsApi';
+import { fetchSectors, createSectors, updateSectors as updateSectorsApi, fetchSectorsByEventId } from '@/lib/api/sectorsApi';
+import { fetchLots, createLot, updateLot as updateLotApi, fetchLotsByEventId } from '@/lib/api/lotsApi';
 import { FormItemContainer } from '../../components/Form/FormItemContainer';
 import { FormSection } from '../../components/Form/FormSection';
 import { useDynamicFormItems } from '../../hooks/useDynamicFormItems';
@@ -23,7 +25,7 @@ import {
   defaultSector,
   defaultLot
 } from '../../components/Form/eventFormConfig';
-
+import { FaArrowLeft } from 'react-icons/fa';
 
 function EditEventPage() {
   const params = useParams();
@@ -52,18 +54,16 @@ function EditEventPage() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await api.get(`/events/${eventId}`);
-        const event = res.data;
-
+        const event = await fetchEventById(eventId);
         setEventData(event);
 
         const [sectorsRes, lotsRes] = await Promise.all([
-          api.get(`/sectors?eventId=${eventId}`),
-          api.get(`/lots?eventId=${eventId}`),
+          fetchSectorsByEventId(eventId),
+          fetchLotsByEventId(eventId),
         ]);
 
-        setSectors(sectorsRes.data || []);
-        setLotes(lotsRes.data || []);
+        setSectors(sectorsRes);
+        setLotes(lotsRes);
       } catch (err) {
         console.error('Failed to fetch event data', err);
       } finally {
@@ -77,19 +77,16 @@ function EditEventPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       const formData = new FormData(e.currentTarget as HTMLFormElement);
       const bannerFile = formData.get('banner') as File;
       let bannerUrl = eventData?.bannerUrl || '';
-  
-      if (bannerFile.size > 0) {
-        const uploadFormData = new FormData();
-        uploadFormData.append('file', bannerFile);
-        const uploadResponse = await api.post('/upload', uploadFormData);
-        bannerUrl = uploadResponse.data.url;
+
+      if (bannerFile && bannerFile.size > 0) {
+        bannerUrl = await uploadBanner(bannerFile);
       }
-  
+
       const eventPayload = {
         name: formData.get('name'),
         date: formData.get('date'),
@@ -98,27 +95,23 @@ function EditEventPage() {
         bannerUrl,
         organizerId: userId,
       };
-  
-      await api.patch(`/events/${eventId}`, eventPayload);
-  
-      const sectorPromises = sectors.map((sector) => {
-        if (sector.id) {
-          return api.patch(`/sectors/${sector.id}`, sector);
-        } else {
-          return api.post('/sectors', { ...sector, eventId });
-        }
-      });
+
+      await updateEvent(eventId, eventPayload);
+
+      const sectorPromises = sectors.map((sector) =>
+        sector.id
+          ? updateSectorsApi(sector.id, sector)
+          : createSectors({ ...sector, eventId })
+      );
       await Promise.all(sectorPromises);
-  
-      const lotPromises = lotes.map((lot) => {
-        if (lot.id) {
-          return api.patch(`/lots/${lot.id}`, lot);
-        } else {
-          return api.post('/lots', { ...lot, eventId });
-        }
-      });
+
+      const lotPromises = lotes.map((lot) =>
+        lot.id
+          ? updateLotApi(lot.id, lot)
+          : createLot({ ...lot, eventId })
+      );
       await Promise.all(lotPromises);
-  
+
       window.location.href = `/my-events/${eventId}`;
     } catch (err) {
       console.error('Failed to update event', err);
@@ -137,11 +130,14 @@ function EditEventPage() {
       <Input
         label={field.label}
         value={value}
-        onChange={e => onChange(field.type === 'number' ? parseFloat(e.target.value) : e.target.value)}
+        onChange={(e) =>
+          onChange(field.type === 'number' ? parseFloat(e.target.value) : e.target.value)
+        }
         type={field.type as any}
         required={field.required}
-        step={field.step} 
-        name={field.name}      />
+        step={field.step}
+        name={field.name}
+      />
     </div>
   );
 
@@ -169,14 +165,14 @@ function EditEventPage() {
           <Section className="py-8">
             <div className="flex items-center gap-4 mb-6">
               <Link href="/my-events">
-                <Button variant="ghost">{'<'}</Button>
+                <Button variant="ghost"><FaArrowLeft/></Button>
               </Link>
               <h1 className="text-2xl font-semibold">Editar Evento</h1>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <Section className="w-full">
-                {eventFields.map(field => (
+                {eventFields.map((field) => (
                   <Input
                     key={field.name}
                     name={field.name}
@@ -186,7 +182,9 @@ function EditEventPage() {
                     accept={field.type === 'file' ? 'image/*' : undefined}
                     defaultValue={
                       field.type === 'datetime-local' && eventData[field.name as keyof Event]
-                        ? new Date(eventData[field.name as keyof Event] as string).toISOString().slice(0, 16)
+                        ? new Date(eventData[field.name as keyof Event] as string)
+                            .toISOString()
+                            .slice(0, 16)
                         : eventData[field.name as keyof Event]
                     }
                   />
@@ -195,12 +193,12 @@ function EditEventPage() {
 
               <FormSection title="Setores" onAdd={() => addSector(defaultSector)}>
                 {sectors.map((sector, index) => (
-                  <FormItemContainer 
+                  <FormItemContainer
                     key={`sector-${sector.id || index}`}
                     onRemove={() => removeSector(index)}
                   >
-                    {sectorFields.map(field => (
-                      <div 
+                    {sectorFields.map((field) => (
+                      <div
                         key={`sector-${sector.id}-${field.name}`}
                         className={field.name === 'description' ? 'md:col-span-4' : ''}
                       >
@@ -218,11 +216,11 @@ function EditEventPage() {
 
               <FormSection title="Lotes" onAdd={() => addLot(defaultLot)}>
                 {lotes.map((lot, index) => (
-                  <FormItemContainer 
+                  <FormItemContainer
                     key={`lot-${lot.id}-${index}`}
                     onRemove={() => removeLot(index)}
                   >
-                    {lotFields.map(field => (
+                    {lotFields.map((field) => (
                       <div key={`lot-${lot.id}-${field.name}`}>
                         {renderField(
                           field,
