@@ -24,13 +24,14 @@ export function useCreateTickets() {
         throw new Error('Invalid order data: sectors not found or invalid.');
       }
 
-      const ticketPromises = order.sectors.map((sector: TicketPayload) =>
-        api.post('/tickets', {
-          eventId: order.eventId,
-          sectorId: sector.sectorId,
-          quantity: sector.quantity,
-          price: sector.price,
-        })
+      const ticketPromises = order.sectors.flatMap((sector: TicketPayload) =>
+        Array.from({ length: sector.quantity }).map(() =>
+          api.post('/tickets', {
+            eventId: order.eventId,
+            sectorId: sector.sectorId,
+            price: sector.price,
+          })
+        )
       );
 
       await Promise.all(ticketPromises);
@@ -43,8 +44,8 @@ export function useCreateTickets() {
     }
   };
 
-  const handleCreateTickets = async () => {
-    await createTickets(orderId); // Ensure this is awaited
+  const handleCreateTickets = async (orderId: string) => {
+    await createTickets(orderId);
   };
 
   return { createTickets, isCreating, error, handleCreateTickets };

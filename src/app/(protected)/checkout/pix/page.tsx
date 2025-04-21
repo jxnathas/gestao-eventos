@@ -4,6 +4,9 @@ import QRCode from 'react-qr-code';
 import { Button } from '@/components/ui/Button';
 import { useSearchParams } from 'next/navigation';
 import { useCreateTickets } from '../hooks/useCreateTickets';
+import { socket } from '@/lib/socket/socket';
+import { ButtonLink } from '@/components/ui/ButtonLink';
+import { useLoadingStore } from '@/lib/stores/useLoadingStore';
 
 export default function PixPaymentPage() {
   const searchParams = useSearchParams();
@@ -11,6 +14,7 @@ export default function PixPaymentPage() {
   const [paymentData, setPaymentData] = useState<{ qrCode: string; code: string } | null>(null);
   const [paid, setPaid] = useState(false);
   const { createTickets, isCreating, error } = useCreateTickets();
+  const { setLoading } = useLoadingStore();
 
   useEffect(() => {
     if (!orderId) {
@@ -43,6 +47,23 @@ export default function PixPaymentPage() {
     return () => clearTimeout(timer);
   }, [paymentData, orderId, createTickets]);
 
+  useEffect(() => {
+    socket.on('payment_approved', (data) => {
+      console.log('Payment approved:', data);
+      setPaid(true);
+      createTickets(orderId);
+    });
+
+    return () => {
+      socket.off('payment_approved');
+    };
+  }, [orderId, createTickets]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 3000);
+  }, [setLoading]);
+
   if (!orderId) {
     return (
       <div className="max-w-md mx-auto text-center">
@@ -59,9 +80,9 @@ export default function PixPaymentPage() {
           <h2 className="text-2xl font-bold text-green-600">Pagamento Aprovado!</h2>
           <p>Seus ingressos foram reservados com sucesso.</p>
           {error && <p className="text-red-500">{error}</p>}
-          <Button href="/customer/tickets" variant="primary" disabled={isCreating}>
+            <ButtonLink href="/customer/tickets" variant="primary" disabled={isCreating}>
             {isCreating ? 'Criando Ingressos...' : 'Ver Ingressos'}
-          </Button>
+            </ButtonLink>
         </div>
       ) : (
         <>

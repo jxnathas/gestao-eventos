@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/Card';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import toast from 'react-hot-toast';
 import api from '@/lib/api/api';
 
 export default function SignupPage() {
@@ -27,10 +26,10 @@ export default function SignupPage() {
 
     try {
       await api.post('/users', userData);
-      toast.success('Cadastro realizado! Faça login.');
       router.push('/login');
+      
     } catch (error) {
-      toast.error('Erro ao cadastrar. Tente novamente.');
+      console.error('Error creating user:', error);
     }
   };
 
@@ -43,52 +42,13 @@ export default function SignupPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            name="name"
-            type="text"
-            placeholder="Nome completo"
-            required
-          />
-          <Input
-            name="document"
-            type="text"
-            placeholder="CPF ou CNPJ"
-            required
-          />
-          <Input
-            name="phone"
-            type="tel"
-            placeholder="Telefone"
-            required
-          />
-
-          <Input
-            name="establishmentName"
-            type="text"
-            placeholder="Razão Social"
-            required
-          />
-          <Input
-            name="tradingName"
-            type="text"
-            placeholder="Nome Fantasia"
-            required
-          />
-
-          <Input
-            name="email"
-            type="email"
-            placeholder="Email"
-            required
-          />
-          <Input
-            name="password"
-            type="password"
-            placeholder="Senha (mín. 6 caracteres)"
-            minLength={6}
-            required
-          />
-
+          <Input name="name" type="text" placeholder="Nome completo" required />
+          <Input name="document" type="text" placeholder="CPF ou CNPJ" required />
+          <Input name="phone" type="tel" placeholder="Telefone" required />
+          <Input name="establishmentName" type="text" placeholder="Razão Social" required />
+          <Input name="tradingName" type="text" placeholder="Nome Fantasia" required />
+          <Input name="email" type="email" placeholder="Email" required />
+          <Input name="password" type="password" placeholder="Senha (mín. 6 caracteres)" minLength={6} required />
           <Button type="submit" variant="primary" className="w-full mt-4">
             Cadastrar
           </Button>
@@ -96,10 +56,7 @@ export default function SignupPage() {
 
         <div className="text-center text-sm text-gray-500">
           Já tem uma conta?{' '}
-          <button
-            onClick={() => router.push('/login')}
-            className="text-primary hover:underline"
-          >
+          <button onClick={() => router.push('/login')} className="text-primary hover:underline">
             Faça login
           </button>
         </div>

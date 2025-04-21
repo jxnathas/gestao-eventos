@@ -43,6 +43,17 @@
       "phone": "master",
       "role": "user",
       "id": 4
+    },
+    {
+      "name": "teste123",
+      "document": "400289220000100",
+      "establishmentName": "tete",
+      "tradingName": "teste",
+      "email": "teste@email.com",
+      "password": "teste123",
+      "phone": "00 40028922",
+      "role": "user",
+      "id": 5
     }
   ],
   "events": [
@@ -283,7 +294,21 @@
       "id": "temp-0"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "eventId": 1,
+      "sectors": [
+        {
+          "sectorId": "1",
+          "name": "Pista",
+          "quantity": 3,
+          "price": 100
+        }
+      ],
+      "totalPrice": 300,
+      "id": 1
+    }
+  ],
   "coupons": [
     {
       "code": "carcaju",
@@ -306,7 +331,19 @@
       "id": 3
     }
   ],
-  "tickets": [],
+  "tickets": [
+    {
+      "eventId": 1,
+      "sectorId": "1",
+      "id": 1
+    },
+    {
+      "eventId": 1,
+      "sectorId": "1",
+      "price": 100,
+      "id": 2
+    }
+  ],
   "payments": [],
   "settings": {
     "storeColors": {
@@ -314,27 +351,5 @@
       "secondary": "#10B981"
     }
   },
-  "upload": [
-    {
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "id": 7
-    }
-  ]
+  "upload": []
 }

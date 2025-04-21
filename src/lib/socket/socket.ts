@@ -17,4 +17,12 @@ export function setupSocketListeners() {
   socket.on('disconnect', (reason) => {
     console.log('Desconectado:', reason);
   });
+
+  socket.on('connect_error', (err) => {
+    console.error('Connection error:', err.message);
+  });
+
+  socket.on('connect_timeout', () => {
+    console.warn('Connection timed out.');
+  });
 }
