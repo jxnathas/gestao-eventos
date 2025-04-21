@@ -6,7 +6,7 @@ const http = require('http');
 const server = http.createServer();
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.NEXT_PUBLIC_SOCKET_URL,
     methods: ["GET", "POST"]
   }
 });
@@ -37,6 +37,8 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3002, () => {
-  console.log('Servidor WebSocket rodando na porta 3002');
+const PORT = process.env.NEXT_PUBLIC_SOCKET_PORT;
+
+server.listen(PORT, () => {
+  console.log(`Servidor WebSocket rodando na porta ${PORT}`);
 });
