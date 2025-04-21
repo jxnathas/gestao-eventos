@@ -3,61 +3,39 @@ Cria uma aplicação de gestão e venda de eventos fazendo o gerenciamento com o
 
 ## Instalar dependências
 ```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
+npm install | yarn install | pnpm install | bun install
 ```
 
 ## Como executar
 
 Frontend
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev | yarn dev | pnpm dev | bun dev
 ```
 
 Mock server
 ```bash
-npm run mock
-# or
-yarn mock
-# or
-pnpm mock
-# or
-bun mock
+npm run mock | yarn mock | pnpm mock | bun mock
 ```
 
 web-socket-server
 ```bash
-npm run socket
-# or
-yarn socket
-# or
-pnpm socket
-# or
-bun socket
+npm run socket | yarn socket | pnpm socket | bun socket
 ```
 
 ## Estutura de pastas
 ```
+/api (db.json rotas da API fake via JSON Server)
 /src
   /app
-    /api (rotas da API fake via JSON Server)
     /(public) (rotas públicas: login, cadastro)
       /login
       /signup
+      /events
     /(protected) (rotas privadas - requer autenticação)
       /dashboard
-      /events
+      /my-events
+      /customer
       /sectors
       /coupons
       /profile
@@ -65,6 +43,7 @@ bun socket
       /checkout
     layout.tsx (providers: Zustand, Socket.io, etc.)
   /components (componentes reutilizáveis)
+    /ui
   /lib
     /api (client do JSON Server)
     /socket (config do WebSocket)

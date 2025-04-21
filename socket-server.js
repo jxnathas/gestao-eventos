@@ -1,12 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { Server } = require('socket.io');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
+require('dotenv').config();
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const http = require('http');
 
 const server = http.createServer();
 const io = new Server(server, {
   cors: {
-    origin: process.env.NEXT_PUBLIC_SOCKET_URL,
+    origin: process.env.NEXT_PUBLIC_BASE_URL,
     methods: ["GET", "POST"]
   }
 });
