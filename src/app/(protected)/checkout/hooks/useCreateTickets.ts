@@ -11,8 +11,11 @@ interface TicketPayload {
 export function useCreateTickets() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [ticketsCreated, setTicketsCreated] = useState(false);
 
   const createTickets = async (orderId: string) => {
+    if (ticketsCreated || isCreating) return;
+
     setIsCreating(true);
     setError(null);
 
@@ -24,17 +27,25 @@ export function useCreateTickets() {
         throw new Error('Invalid order data: sectors not found or invalid.');
       }
 
+      const ticketsResponse = await api.get(`/tickets?orderId=${orderId}`);
+      if (ticketsResponse.data.length > 0) {
+        console.log('Tickets already exist for this order.');
+        return;
+      }
+
       const ticketPromises = order.sectors.flatMap((sector: TicketPayload) =>
         Array.from({ length: sector.quantity }).map(() =>
           api.post('/tickets', {
             eventId: order.eventId,
             sectorId: sector.sectorId,
             price: sector.price,
+            orderId: orderId
           })
         )
       );
 
       await Promise.all(ticketPromises);
+      setTicketsCreated(true);
       console.log('Tickets created successfully.');
     } catch (err) {
       console.error('Failed to create tickets:', err);
@@ -44,9 +55,5 @@ export function useCreateTickets() {
     }
   };
 
-  const handleCreateTickets = async (orderId: string) => {
-    await createTickets(orderId);
-  };
-
-  return { createTickets, isCreating, error, handleCreateTickets };
+  return { createTickets, isCreating, error };
 }

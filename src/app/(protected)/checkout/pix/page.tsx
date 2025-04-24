@@ -36,28 +36,34 @@ export default function PixPaymentPage() {
   }, [orderId]);
 
   useEffect(() => {
-    if (!paymentData || !orderId) return;
+    if (!paymentData || !orderId || paid) return;
 
-    const timer = setTimeout(async () => {
+    const timer = setTimeout(() => {
       setPaid(true);
-
-      await createTickets(orderId);
     }, 15000);
 
     return () => clearTimeout(timer);
-  }, [paymentData, orderId, createTickets]);
+  }, [paymentData, orderId, paid]);
 
   useEffect(() => {
-    socket.on('payment_approved', (data) => {
-      console.log('Payment approved:', data);
-      setPaid(true);
-      createTickets(orderId);
-    });
+    if (!orderId || !paid) return;
+
+    const handlePaymentApproved = async () => {
+      await createTickets(orderId);
+    };
+
+    socket.on('payment_approved', handlePaymentApproved);
 
     return () => {
-      socket.off('payment_approved');
+      socket.off('payment_approved', handlePaymentApproved);
     };
-  }, [orderId, createTickets]);
+  }, [orderId, createTickets, paid]);
+
+  useEffect(() => {
+    if (paid) {
+      createTickets(orderId);
+    }
+  }, [paid, orderId, createTickets]);
 
   useEffect(() => {
     setLoading(true);
@@ -80,9 +86,9 @@ export default function PixPaymentPage() {
           <h2 className="text-2xl font-bold text-green-600">Pagamento Aprovado!</h2>
           <p>Seus ingressos foram reservados com sucesso.</p>
           {error && <p className="text-red-500">{error}</p>}
-            <ButtonLink href="/customer/tickets" variant="primary" disabled={isCreating}>
+          <ButtonLink href="/customer/tickets" variant="primary" disabled={isCreating}>
             {isCreating ? 'Criando Ingressos...' : 'Ver Ingressos'}
-            </ButtonLink>
+          </ButtonLink>
         </div>
       ) : (
         <>
