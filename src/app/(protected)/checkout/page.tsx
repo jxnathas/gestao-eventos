@@ -7,6 +7,8 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/lib/api/api';
+import { Header } from '@/components/ui/Header';
+import { Section } from '@/components/ui/Section';
 
 interface CheckoutSector {
   sectorId: string;
@@ -176,98 +178,106 @@ export default function CheckoutPage() {
   }
 
   return (
-    <Container className="py-8">
-      <h1 className="text-2xl font-bold mb-6">Resumo da Compra</h1>
-      
-      <Card className="p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">{event.name}</h2>
-        <ul className="space-y-4">
-          {sectors.map((sector) => (
-            <li key={sector.sectorId} className="flex justify-between">
-              <span>{sector.name} (x{sector.quantity})</span>
-              <span>R$ {(sector.quantity * (sector.price || 0)).toFixed(2)}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="border-t mt-4 pt-4 flex justify-between font-semibold">
-          <span>Total:</span>
-          <span>R$ {totalPrice.toFixed(2)}</span>
-        </div>
-      </Card>
+    <>
+      <Header />
+      <Container className="py-12">
+        <Section className="py-8">
+          <h1 className="text-2xl font-bold mb-6">Resumo da Compra</h1>
 
-      <Card className="p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Cupom de Desconto</h2>
-        <div className="flex gap-2 mb-2">
-          <Input
-            type="text"
-            placeholder="Insira seu cupom"
-            value={couponCode}
-            onChange={(e) => setCouponCode(e.target.value)}
-            className="flex-1" label={''} name={''}          />
-          <Button
-            onClick={applyCoupon}
-            disabled={isApplyingCoupon || !couponCode.trim()}
-          >
-            {isApplyingCoupon ? 'Aplicando...' : 'Aplicar'}
-          </Button>
-        </div>
-        {couponError && <p className="text-red-500 text-sm">{couponError}</p>}
-        {couponSuccess && (
-          <div className="flex justify-between items-center mt-2">
-            <p className="text-green-500 text-sm">{couponSuccess}</p>
-            <Button variant="ghost" size="small" onClick={removeCoupon}>
-              Remover
-            </Button>
-          </div>
-        )}
-      </Card>
-
-      {discountedPrice !== null && (
-        <Card className="p-6 mb-6 bg-green-50">
-          <div className="flex justify-between items-center">
-            <span className="font-semibold">Total com desconto:</span>
-            <div className="text-right">
-              <span className="line-through text-gray-500 mr-2">R$ {totalPrice.toFixed(2)}</span>
-              <span className="text-green-600 font-bold text-xl">R$ {discountedPrice.toFixed(2)}</span>
+          <Card className="p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">{event.name}</h2>
+            <ul className="space-y-4">
+              {sectors.map((sector) => (
+                <li key={sector.sectorId} className="flex justify-between">
+                  <span>{sector.name} (x{sector.quantity})</span>
+                  <span>R$ {(sector.quantity * (sector.price || 0)).toFixed(2)}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="border-t mt-4 pt-4 flex justify-between font-semibold">
+              <span>Total:</span>
+              <span>R$ {totalPrice.toFixed(2)}</span>
             </div>
-          </div>
-        </Card>
-      )}
+          </Card>
 
-      <Card className="p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Método de Pagamento</h2>
-        <div className="space-y-4">
-          <div
-            className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-              selectedPaymentMethod === 'pix'
-                ? 'border-primary bg-primary/10'
-                : 'border-gray-200 hover:border-primary'
-            }`}
-            onClick={() => setSelectedPaymentMethod('pix')}
-          >
-            <span className="font-medium">PIX</span>
-          </div>
-          <div
-            className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-              selectedPaymentMethod === 'credit-card'
-                ? 'border-primary bg-primary/10'
-                : 'border-gray-200 hover:border-primary'
-            }`}
-            onClick={() => setSelectedPaymentMethod('credit-card')}
-          >
-            <span className="font-medium">Cartão de Crédito (Em breve)</span>
-          </div>
-        </div>
-      </Card>
+          <Card className="p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Cupom de Desconto</h2>
+            <div className="flex gap-2 mb-2">
+              <Input
+                type="text"
+                placeholder="Insira seu cupom"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="flex-1"
+                label={''}
+                name={''}
+              />
+              <Button
+                onClick={applyCoupon}
+                disabled={isApplyingCoupon || !couponCode.trim()}
+              >
+                {isApplyingCoupon ? 'Aplicando...' : 'Aplicar'}
+              </Button>
+            </div>
+            {couponError && <p className="text-red-500 text-sm">{couponError}</p>}
+            {couponSuccess && (
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-green-500 text-sm">{couponSuccess}</p>
+                <Button variant="ghost" size="small" onClick={removeCoupon}>
+                  Remover
+                </Button>
+              </div>
+            )}
+          </Card>
 
-      <Button
-        variant="primary"
-        className="w-full"
-        onClick={handlePayment}
-        disabled={!selectedPaymentMethod}
-      >
-        Confirmar Pagamento
-      </Button>
-    </Container>
+          {discountedPrice !== null && (
+            <Card className="p-6 mb-6 bg-green-50">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold">Total com desconto:</span>
+                <div className="text-right">
+                  <span className="line-through text-gray-500 mr-2">R$ {totalPrice.toFixed(2)}</span>
+                  <span className="text-green-600 font-bold text-xl">R$ {discountedPrice.toFixed(2)}</span>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          <Card className="p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Método de Pagamento</h2>
+            <div className="space-y-4">
+              <div
+                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                  selectedPaymentMethod === 'pix'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-gray-200 hover:border-primary'
+                }`}
+                onClick={() => setSelectedPaymentMethod('pix')}
+              >
+                <span className="font-medium">PIX</span>
+              </div>
+              <div
+                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                  selectedPaymentMethod === 'credit-card'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-gray-200 hover:border-primary'
+                }`}
+                onClick={() => setSelectedPaymentMethod('credit-card')}
+              >
+                <span className="font-medium">Cartão de Crédito (Em breve)</span>
+              </div>
+            </div>
+          </Card>
+
+          <Button
+            variant="primary"
+            className="w-full"
+            onClick={handlePayment}
+            disabled={!selectedPaymentMethod}
+          >
+            Confirmar Pagamento
+          </Button>
+        </Section>
+      </Container>
+    </>
   );
 }

@@ -1,7 +1,11 @@
 import React from 'react';
 
 interface BreadCrumbsProps {
-    items: { label: string; href?: string }[];
+    items: Array<{
+        label: string;
+        href?: string;
+        active?: boolean;
+    }>;
 }
 
 export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({ items }) => {

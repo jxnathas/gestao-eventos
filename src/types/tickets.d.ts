@@ -7,4 +7,6 @@ export interface Ticket {
     orderId: string;
     status: 'active' | 'used' | 'canceled';
     createdAt: string;
+    expiredAt: string;
+    location: string;
 }

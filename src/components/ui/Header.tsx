@@ -19,9 +19,12 @@ export const Header = ({ isHome = false }: HeaderProps) => {
              Poggo👾
           </ButtonLink>
           {user && (
-            <ButtonLink variant='none' href="/dashboard" className="text-sm text-purple-800 flex items-center gap-2">
-              Dashboard
-            </ButtonLink>
+            <><ButtonLink variant='none' href="/dashboard" className="text-sm text-purple-800 flex items-center gap-1">
+              Organizador
+            </ButtonLink><ButtonLink variant='none' href="/customer/tickets" className="text-sm text-purple-800 flex items-center gap-1">
+                Cliente
+              </ButtonLink></>
+            
           )}
         </div>
 

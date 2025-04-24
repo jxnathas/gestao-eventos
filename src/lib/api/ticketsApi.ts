@@ -20,14 +20,3 @@ export const updateTicket = async (id: string, ticket: Partial<Ticket>): Promise
 export const deleteTicket = async (id: string): Promise<void> => {
     await api.delete(`/tickets/${id}`);
 };
-
-export const fetchTicketsByEventId = async (eventId: string): Promise<Ticket[]> => {
-    const response = await api.get(`/tickets?eventId=${eventId}`);
-    return response.data;
-};
-
-export const fetchTicketsByUserId = async (userId: string): Promise<Ticket[]> => {
-    const response = await api.get(`/tickets?userId=${userId}`);
-    return response.data;
-};
-

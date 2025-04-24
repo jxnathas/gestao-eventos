@@ -217,6 +217,28 @@
       "description": "markin",
       "organizerId": 6,
       "createdAt": "2025-04-22T23:02:22.265Z"
+    },
+    {
+      "id": "cd8e197e-029a-4bfa-be0a-b78c1fd70084",
+      "name": "Show de Rock Anos 2000",
+      "date": "2025-05-11T09:21",
+      "location": "Feira de Santana, BA",
+      "description": "Show de teste",
+      "bannerUrl": {
+        "id": 1
+      },
+      "organizerId": 4,
+      "createdAt": "2025-04-24T12:23:25.133Z"
+    },
+    {
+      "id": "313b01d1-9946-4b7b-99b2-cbab46339128",
+      "name": "master 10.000",
+      "date": "2025-05-07T09:40",
+      "location": "master 10.000",
+      "description": "master 10.000",
+      "bannerUrl": "",
+      "organizerId": 4,
+      "createdAt": "2025-04-24T12:40:38.982Z"
     }
   ],
   "sectors": [
@@ -256,7 +278,7 @@
     },
     {
       "name": "master",
-      "capacity": 1000,
+      "capacity": "10000",
       "price": 10000,
       "description": "master",
       "id": "temp-0",
@@ -269,6 +291,22 @@
       "description": "markin",
       "id": "74ba0839-34eb-4465-908f-a173f770add7",
       "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0"
+    },
+    {
+      "name": "Pista",
+      "capacity": 600,
+      "price": 30,
+      "description": "Setor único",
+      "id": "46f7e3b6-5a6c-4591-afe9-8a68ec095ec6",
+      "eventId": "cd8e197e-029a-4bfa-be0a-b78c1fd70084"
+    },
+    {
+      "name": "master 10.000",
+      "capacity": 1,
+      "price": 10000,
+      "description": "master 10.000",
+      "id": "0119c013-534d-41dd-b79f-dee1602f4848",
+      "eventId": "313b01d1-9946-4b7b-99b2-cbab46339128"
     }
   ],
   "lots": [
@@ -331,6 +369,28 @@
       "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0",
       "createdAt": "",
       "id": "5c57d5de-e060-4035-b91b-72f9100a5521"
+    },
+    {
+      "name": "Promocional",
+      "startDate": "2025-04-01T09:23",
+      "endDate": "2025-05-10T09:23",
+      "discount": 10,
+      "price": 0,
+      "isActive": false,
+      "eventId": "cd8e197e-029a-4bfa-be0a-b78c1fd70084",
+      "createdAt": "",
+      "id": "6db963e3-f6bf-4dd3-bfa2-3d2539beedee"
+    },
+    {
+      "name": "master 10.000",
+      "startDate": "2025-05-11T09:40",
+      "endDate": "2025-05-11T09:40",
+      "discount": 10,
+      "price": 0,
+      "isActive": false,
+      "eventId": "313b01d1-9946-4b7b-99b2-cbab46339128",
+      "createdAt": "",
+      "id": "2f0dfde2-635a-4086-8ce9-610d65f73847"
     }
   ],
   "orders": [
@@ -445,6 +505,12 @@
       "createdAt": "",
       "isActive": false,
       "id": 9
+    },
+    {
+      "couponCode": "master",
+      "eventId": 1,
+      "totalPrice": 100,
+      "id": 10
     }
   ],
   "tickets": [
@@ -466,13 +532,11 @@
       "id": 3
     }
   ],
-  "payments": [
-    
-  ],
-  "settings": [
-    
-  ],
+  "payments": [],
+  "settings": [],
   "upload": [
-
+    {
+      "id": 1
+    }
   ]
 }

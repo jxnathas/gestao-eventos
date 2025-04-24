@@ -1,5 +1,4 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -8,43 +7,12 @@ import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
 import { Section } from '@/components/ui/Section';
 import { useAuthStore } from '@/lib/stores/authStore';
-import { fetchEvents, deleteEvent } from '@/lib/api/eventsApi';
 import Link from 'next/link';
-import type { Event } from '@/types';
+import { useEvents } from './hooks/useEvents';
 
 function EventsPage() {
-  const [events, setEvents] = useState<Event[]>([]);
   const userId = useAuthStore.getState().user?.id || 'defaultUserId';
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const fetchedEvents = await fetchEvents({ organizerId: userId });
-        setEvents(fetchedEvents);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch events');
-        console.error(err);
-      }
-    };
-
-    if (userId) {
-      loadEvents();
-    }
-  }, [userId]);
-
-  const handleDelete = async (eventId: string) => {
-    if (confirm('Excluir este evento?')) {
-      try {
-        await deleteEvent(eventId);
-        const updatedEvents = await fetchEvents({ organizerId: userId });
-        setEvents(updatedEvents);
-      } catch (err) {
-        console.error('Failed to delete event', err);
-      }
-    }
-  };
+  const { events, error, handleDelete } = useEvents(userId);
 
   return (
     <>
@@ -72,27 +40,31 @@ function EventsPage() {
             </Button>
           </Link>
 
+          {error && <p className="text-red-500">{error}</p>}
+
           <DataTable
             headers={['Nome', 'Data', 'Ações']}
-            data={events.map((event) => [
-              event.name,
-              new Date(event.date).toLocaleString(),
-              <div key={event.id} className="flex gap-2">
-                <Link href={`/my-events/edit/${event.id}`}>
-                  <Button variant="ghost" size="small">
-                    Editar
-                  </Button>
-                </Link>
+            data={events.map((event) => ({
+              Nome: event.name,
+              Data: new Date(event.date).toLocaleString(),
+              Ações: (
+                <div key={event.id} className="flex gap-2">
+                  <Link href={`/my-events/edit/${event.id}`}>
+                    <Button variant="ghost" size="small">
+                      Editar
+                    </Button>
+                  </Link>
 
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => handleDelete(event.id)}
-                >
-                  Excluir
-                </Button>
-              </div>,
-            ])}
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={() => handleDelete(event.id)}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              ),
+            }))}
           />
         </Card>
       </Section>
