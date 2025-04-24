@@ -38,7 +38,8 @@ describe('Home Page', () => {
   });
 
   it('handles API errors gracefully', async () => {
-    (api.get as jest.Mock).mockRejectedValueOnce(new Error('Failed to fetch'));
+    const errorMessage = 'Failed to fetch';
+    (api.get as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     render(<Home />);
 
@@ -49,7 +50,7 @@ describe('Home Page', () => {
 
     expect(console.error).toHaveBeenCalledWith(
       'Erro ao carregar eventos:',
-      expect.any(Error)
+      expect.objectContaining({ message: errorMessage })
     );
   });
 });
