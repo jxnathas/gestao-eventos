@@ -1,71 +1,65 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useCoupons } from './hooks/useCoupons';
+import { useCouponHandlers } from './hooks/useCouponHandlers';
+import { CouponForm } from './components/CouponForm';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { DataTable } from '@/components/ui/DataTable';
-import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Section } from '@/components/ui/Section';
-import withAuth from '@/components/hoc/withAuth';
 import { Header } from '@/components/ui/Header';
+import { FaArrowLeft } from 'react-icons/fa';
 import { useAuthStore } from '@/lib/stores/authStore';
-import { fetchCoupons, createCoupon, updateCoupon, deleteCoupon } from '@/lib/api/couponsApi';
-import type { Coupon } from '@/types';
+import { useNavigation } from '@/lib/utils/navigation';
+import withAuth from '@/components/hoc/withAuth';
+import { Coupon } from '@/types';
+import toast from 'react-hot-toast';
 
 function CouponsPage() {
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentCoupon, setCurrentCoupon] = useState<Coupon | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
   const userId = useAuthStore.getState().user?.id || 'defaultUserId';
+  const [selectedEvent, setSelectedEvent] = useState<{ id: string; name: string } | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [couponToDelete, setCouponToDelete] = useState<Coupon | null>(null);
 
-  useEffect(() => {
-    const loadCoupons = async () => {
-      try {
-        const fetchedCoupons = await fetchCoupons({ organizerId: userId });
-        setCoupons(fetchedCoupons);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch coupons');
-        console.error(err);
-      }
-    };
+  const {
+    isModalOpen,
+    setIsModalOpen,
+    currentCoupon,
+    setCurrentCoupon,
+    handleSubmit,
+    handleDelete,
+  } = useCouponHandlers(userId);
 
-    if (userId) {
-      loadCoupons();
-    }
-  }, [userId]);
+  const { coupons } = useCoupons(userId);
+  const { navigateTo } = useNavigation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const payload = Object.fromEntries(formData) as unknown as Omit<Coupon, 'id' | 'createdAt'>;
+  const handleOpenModal = (coupon: any = null) => {
+    setCurrentCoupon(coupon || null);
+    setSelectedEvent(
+      coupon
+        ? { id: coupon.eventId || '', name: coupon.eventName || 'Nenhum evento' }
+        : { id: '', name: 'Nenhum evento' }
+    );
+    setIsModalOpen(true);
+  };
 
+  const handleConfirmDelete = async () => {
+    if (!couponToDelete) return;
     try {
-      if (currentCoupon?.id) {
-        await updateCoupon(currentCoupon.id, payload);
-      } else {
-        await createCoupon({ ...payload, organizerId: userId });
-      }
-      setIsModalOpen(false);
-      const updatedCoupons = await fetchCoupons({ organizerId: userId });
-      setCoupons(updatedCoupons);
+      await handleDelete(couponToDelete.id);
+      toast.success('Cupom deletado com sucesso!');
     } catch (err) {
-      console.error('Failed to save coupon', err);
+      toast.error('Erro ao deletar cupom.');
+    } finally {
+      setIsDeleteModalOpen(false);
+      setCouponToDelete(null);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Excluir este cupom?')) {
-      try {
-        await deleteCoupon(id);
-        const updatedCoupons = await fetchCoupons({ organizerId: userId });
-        setCoupons(updatedCoupons);
-      } catch (err) {
-        console.error('Failed to delete coupon', err);
-      }
-    }
+  const confirmDeleteCoupon = (coupon: Coupon) => {
+    setCouponToDelete(coupon);
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -74,29 +68,40 @@ function CouponsPage() {
       <Section className="pt-3">
         <Modal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setCurrentCoupon(null);
+            setSelectedEvent(null);
+          }}
           title={currentCoupon ? 'Editar Cupom' : 'Criar Cupom'}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input name="code" label="Código" defaultValue={currentCoupon?.code} required />
-            <Input
-              name="discount"
-              type="text"
-              label="Desconto (%)"
-              defaultValue={currentCoupon?.discount}
-              required
-            />
-            <Input
-              name="validUntil"
-              type="date"
-              label="Válido até"
-              defaultValue={currentCoupon?.validUntil}
-              required
-            />
-            <Button type="submit" variant="primary" className="w-full">
-              Salvar
+          <CouponForm
+            currentCoupon={currentCoupon}
+            selectedEvent={selectedEvent}
+            onSubmit={(couponData) => handleSubmit(couponData)}
+            userId={userId}
+            setSelectedEvent={setSelectedEvent}
+            setCurrentCoupon={setCurrentCoupon}
+          />
+        </Modal>
+
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setCouponToDelete(null);
+          }}
+          title="Confirmar exclusão"
+        >
+          <p className="mb-4">Tem certeza que deseja excluir o cupom <strong>{couponToDelete?.code}</strong>?</p>
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" onClick={() => setIsDeleteModalOpen(false)}>
+              Cancelar
             </Button>
-          </form>
+            <Button variant="danger" onClick={handleConfirmDelete}>
+              Confirmar
+            </Button>
+          </div>
         </Modal>
 
         <Card>
@@ -104,52 +109,49 @@ function CouponsPage() {
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
-                onClick={() => {
-                  window.location.href = '/dashboard';
-                }}
+                onClick={() => navigateTo('/dashboard')}
+                className="flex items-center gap-2"
               >
-                {'<'}
+                <FaArrowLeft />
               </Button>
               <h1 className="text-2xl font-semibold">Cupons</h1>
             </div>
           </div>
 
-          <Button
-            variant="primary"
-            onClick={() => {
-              setCurrentCoupon(null);
-              setIsModalOpen(true);
-            }}
-          >
-            Criar Cupom
-          </Button>
+          <div className="mb-4 flex justify-start">
+            <Button
+              variant="primary"
+              onClick={() => handleOpenModal()}
+            >
+              Criar Cupom
+            </Button>
+          </div>
 
           <DataTable
             headers={['Código', 'Desconto', 'Validade', 'Ações']}
-            data={coupons.map((coupon) => [
-              coupon.code,
-              `${coupon.discount}%`,
-              new Date(coupon.validUntil).toLocaleDateString(),
-              <div key={coupon.id} className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => {
-                    setCurrentCoupon(coupon);
-                    setIsModalOpen(true);
-                  }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => handleDelete(coupon.id)}
-                >
-                  Excluir
-                </Button>
-              </div>,
-            ])}
+            data={coupons.map((coupon) => ({
+              code: coupon.code,
+              discount: `${coupon.discount}%`,
+              validity: new Date(coupon.validUntil).toLocaleDateString(),
+              actions: (
+                <div key={coupon.id} className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={() => handleOpenModal(coupon)}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={() => confirmDeleteCoupon(coupon)}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              ),
+            }))}
           />
         </Card>
       </Section>

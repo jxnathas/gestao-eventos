@@ -4,6 +4,8 @@ export interface Coupon {
     discount: number;
     validUntil: string;
     organizerId: string;
-    eventId: string;
+    eventId?: string;
     createdAt: string;
+    isGlobal: boolean;
+    isActive: boolean;
 };

@@ -10,3 +10,9 @@ export interface PaginatedResponse<T> {
     page: number;
     pageSize: number;
 }
+
+export interface Upload {
+    id: string;
+    url: string;
+    eventId: string;
+}

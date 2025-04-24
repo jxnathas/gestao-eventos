@@ -1,7 +1,7 @@
 import api from "./api";
 import type { EventLot } from "@/types/events";
 
-export const fetchLots = async (filters: { organizerId?: string }): Promise<EventLot[]> => {
+export const fetchLots = async (filters: { organizerId?: string; eventId?: string }): Promise<EventLot[]> => {
     const queryParams = new URLSearchParams(filters as Record<string, string>).toString();
     const response = await api.get(`/lots?${queryParams}`);
     return response.data;
@@ -19,9 +19,4 @@ export const updateLot = async (id: string, lot: Partial<EventLot>): Promise<Eve
 
 export const deleteLot = async (id: string): Promise<void> => {
     await api.delete(`/lots/${id}`);
-};
-
-export const fetchLotsByEventId = async (eventId: string): Promise<EventLot[]> => {
-    const response = await api.get(`/lots?eventId=${eventId}`);
-    return response.data;
 };

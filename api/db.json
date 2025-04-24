@@ -54,6 +54,17 @@
       "phone": "00 40028922",
       "role": "user",
       "id": 5
+    },
+    {
+      "name": "markin",
+      "document": "00000000000",
+      "establishmentName": "MARKIN",
+      "tradingName": "MARKIN",
+      "email": "markin@markin.co",
+      "password": "markinn",
+      "phone": "0000000000",
+      "role": "user",
+      "id": 6
     }
   ],
   "events": [
@@ -190,13 +201,22 @@
     },
     {
       "name": "master",
-      "date": "2025-04-20T08:14",
+      "date": "2025-04-20T11:14",
       "location": "master",
       "description": "master",
       "organizerId": 4,
       "createdAt": "2025-04-20T02:15:20.505Z",
       "id": "biffqVq",
       "bannerUrl": ""
+    },
+    {
+      "id": "11093d68-ea51-49a9-91d7-6f47257aede0",
+      "name": "Show da Banda Pixies MARKIN",
+      "date": "2025-04-22T20:01",
+      "location": "markin",
+      "description": "markin",
+      "organizerId": 6,
+      "createdAt": "2025-04-22T23:02:22.265Z"
     }
   ],
   "sectors": [
@@ -241,6 +261,14 @@
       "description": "master",
       "id": "temp-0",
       "eventId": "biffqVq"
+    },
+    {
+      "name": "markin",
+      "capacity": 1000,
+      "price": 100,
+      "description": "markin",
+      "id": "74ba0839-34eb-4465-908f-a173f770add7",
+      "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0"
     }
   ],
   "lots": [
@@ -292,6 +320,17 @@
       "eventId": "biffqVq",
       "createdAt": "",
       "id": "temp-0"
+    },
+    {
+      "name": "markin",
+      "startDate": "2025-04-22T20:02",
+      "endDate": "2025-04-22T20:02",
+      "discount": 0,
+      "price": 0,
+      "isActive": false,
+      "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0",
+      "createdAt": "",
+      "id": "5c57d5de-e060-4035-b91b-72f9100a5521"
     }
   ],
   "orders": [
@@ -307,6 +346,19 @@
       ],
       "totalPrice": 300,
       "id": 1
+    },
+    {
+      "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0",
+      "sectors": [
+        {
+          "sectorId": "74ba0839-34eb-4465-908f-a173f770add7",
+          "name": "markin",
+          "quantity": 5,
+          "price": 100
+        }
+      ],
+      "totalPrice": 500,
+      "id": 2
     }
   ],
   "coupons": [
@@ -314,7 +366,11 @@
       "code": "carcaju",
       "discount": "10",
       "validUntil": "2025-04-19",
-      "id": 1
+      "organizerId": 1,
+      "eventId": 1,
+      "id": 1,
+      "isGlobal": false,
+      "isActive": true
     },
     {
       "code": "xmen",
@@ -329,6 +385,66 @@
       "validUntil": "2025-04-20",
       "organizerId": 1,
       "id": 3
+    },
+    {
+      "code": "master",
+      "discount": "100",
+      "validUntil": "2025-05-11T05:42",
+      "organizerId": 4,
+      "eventId": "biffqVq",
+      "id": 4,
+      "isGlobal": false
+    },
+    {
+      "code": "master20",
+      "discount": 20,
+      "validUntil": "2025-05-10T05:32",
+      "organizerId": 4,
+      "id": 5,
+      "eventId": "biffqVq",
+      "isGlobal": false
+    },
+    {
+      "code": "master10",
+      "discount": 10,
+      "validUntil": "2025-05-10T05:30",
+      "eventId": "biffqVq",
+      "isGlobal": false,
+      "organizerId": 4,
+      "id": 6
+    },
+    {
+      "code": "master30",
+      "discount": 30,
+      "validUntil": "2025-05-03T05:46",
+      "eventId": "biffqVq",
+      "isGlobal": false,
+      "organizerId": 4,
+      "createdAt": "",
+      "isActive": false,
+      "id": 7
+    },
+    {
+      "code": "master40",
+      "discount": 40,
+      "validUntil": "2025-05-04T06:00",
+      "eventId": "biffqVq",
+      "isGlobal": false,
+      "organizerId": 4,
+      "createdAt": "",
+      "isActive": false,
+      "id": 8
+    },
+    {
+      "code": "master",
+      "discount": 100,
+      "validUntil": "2029-01-24T05:56",
+      "eventId": "global",
+      "isGlobal": true,
+      "organizerId": 4,
+      "createdAt": "",
+      "isActive": false,
+      "id": 9
     }
   ],
   "tickets": [
@@ -342,14 +458,21 @@
       "sectorId": "1",
       "price": 100,
       "id": 2
+    },
+    {
+      "eventId": "11093d68-ea51-49a9-91d7-6f47257aede0",
+      "sectorId": "74ba0839-34eb-4465-908f-a173f770add7",
+      "price": 100,
+      "id": 3
     }
   ],
-  "payments": [],
-  "settings": {
-    "storeColors": {
-      "primary": "#3B82F6",
-      "secondary": "#10B981"
-    }
-  },
-  "upload": []
+  "payments": [
+    
+  ],
+  "settings": [
+    
+  ],
+  "upload": [
+
+  ]
 }

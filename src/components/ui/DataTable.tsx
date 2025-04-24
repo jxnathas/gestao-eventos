@@ -1,8 +1,9 @@
+import { JSX } from 'react';
 import { Card } from './Card';
 
 type DataTableProps = {
   headers: string[];
-  data: Array<Record<string, string | number>>;
+  data: Array<Record<string, string | number | JSX.Element>>;
 };
 
 export const DataTable = ({ headers, data }: DataTableProps) => {

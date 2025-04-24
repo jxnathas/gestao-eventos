@@ -39,7 +39,7 @@ const QuickActionsSection = () => (
       <ButtonLink variant="ghost" href="/my-events/create" className="h-24">
         Criar Evento
       </ButtonLink>
-      <ButtonLink variant="ghost" href="/coupons/create" className="h-24">
+      <ButtonLink variant="ghost" href="/coupons" className="h-24">
         Gerar Cupom
       </ButtonLink>
       <ButtonLink variant="ghost" href="/reports" className="h-24">

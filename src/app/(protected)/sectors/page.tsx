@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { FaArrowLeft } from 'react-icons/fa';
 import api from '@/lib/api/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -88,27 +89,30 @@ function SectorsPage() {
         <Card>
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-4">
-              <Button
+            <Button
                 variant="ghost"
                 onClick={() => {
                   window.location.href = '/dashboard';
                 }}
+                className="flex items-center gap-2"
               >
-                {'<'}
+                <FaArrowLeft />
               </Button>
               <h1 className="text-2xl font-semibold">Setores</h1>
             </div>
           </div>
-
-          <Button
-            variant="primary"
-            onClick={() => {
-              setCurrentSector(null);
-              setIsModalOpen(true);
-            }}
-          >
-            Criar Setor
-          </Button>
+          
+          <div className="mb-4 flex justify-start">
+            <Button
+              variant="primary"
+              onClick={() => {
+                setCurrentSector(null);
+                setIsModalOpen(true);
+              }}
+            >
+              Criar Setor
+            </Button>
+          </div>
 
           <DataTable
             headers={['Nome', 'Capacidade', 'Preço', 'Ações']}

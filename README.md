@@ -90,10 +90,33 @@ npm run socket | yarn socket | pnpm socket | bun socket
     - Arquivo db.json com estrutura:
     ```
         {
-            "users": [],
-            "events": [],
-            "sectors": [],
-            "coupons": []
+          "users": [
+          
+          ],
+          "events": [
+
+          ],
+          "sectors": [
+
+          ],
+          "lots": [
+
+          ],
+          "orders": [
+
+          ],
+          "tickets": [
+
+          ],
+          "payments": [
+
+          ],
+          "settings": [
+
+          ],
+          "upload": [
+
+          ]
         }
     ```
     - Rotas simuladas via json-server (ex: POST /api/events).
