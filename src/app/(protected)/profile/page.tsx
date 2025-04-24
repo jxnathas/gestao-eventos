@@ -29,7 +29,10 @@ function ProfilePage() {
               <h1 className="text-2xl font-semibold">Perfil</h1>
             </div>
           <form className="space-y-4">
-            <Input label="Nome" defaultValue={user?.name || ''} name={'nome'} />
+            <Input disabled label="Nome" defaultValue={user?.name || ''} name={'nome'} />
+            <Input disabled label="Documento" defaultValue={user?.document || ''} name={'documento'} />
+            <Input label="Nome do Estabelecimento" defaultValue={user?.establishmentName || ''} name={'nomeEstabelecimento'} />
+            <Input label="Nome Fantasia" defaultValue={user?.tradingName || ''} name={'nomeFantasia'} />
             <Input label="Email" type="email" defaultValue={user?.email || ''} name={'email'} />
             <Input label="Telefone" type="tel" defaultValue={user?.phone || ''} name={'telefone'} />
             <Button type="submit" variant="primary">
