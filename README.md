@@ -52,6 +52,27 @@ npm run socket | yarn socket | pnpm socket | bun socket
   /types
 ```
 
+# Variaveis de ambiente
+Crie um arquivo .env na raiz do projeto e adicione as linhas abaixo:
+```
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
+
+NEXT_PUBLIC_SOCKET_URL=http://localhost:3002
+
+NEXT_PUBLIC_BASE_PORT=3000
+
+NEXT_PUBLIC_API_PORT=3001
+
+NEXT_PUBLIC_SOCKET_PORT=3002
+
+NEXT_PUBLIC_API_HOST=localhost
+
+NEXT_PUBLIC_SOCKET_HOST=localhost
+
+```
+
 ## Arquitetura
 
 * Next.js (App Router): Roteamento integrado, SSR para SEO e performance.
