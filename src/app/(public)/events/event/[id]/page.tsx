@@ -64,7 +64,7 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
         <div>
           <div className="relative h-64 mb-4 rounded-lg overflow-hidden">
             <Image
-              src={event.bannerUrl || '/default-event.jpg'}
+              src={'/default-event.jpg'}
               alt={event.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

@@ -1,18 +1,17 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
 import withAuth from "@/components/hoc/withAuth";
-import { Card } from '@/components/ui/Card';
 import { Container } from '@/components/ui/Container';
 import { Header } from '@/components/ui/Header';
 import { Section } from '@/components/ui/Section';
-import { BreadCrumbs } from '@/components/ui/BreadCrumbs';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import api from '@/lib/api/api';
+import { fetchTickets } from '@/lib/api/ticketsApi';
 import { useAuthStore } from '@/lib/stores/authStore';
-import { FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from 'react-icons/fa';
-import { FiDownload } from 'react-icons/fi';
 import { Ticket } from '@/types/tickets';
+import { FaTicketAlt } from 'react-icons/fa';
+import TicketsHeader from './components/TicketsHeader';
+import TicketCard from './components/TicketCard';
+import Spinner from '@/components/ui/Spinner';
+import ErrorState from './components/ErrorState';
 
 const TicketsPage = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -23,12 +22,12 @@ const TicketsPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchTickets = async () => {
+    const loadTickets = async () => {
       try {
         setIsLoading(true);
-        const res = await api.get(`/tickets?userId=${userId}`);
-        setTickets(res.data);
-        setFilteredTickets(res.data);
+        const ticketsData = await fetchTickets({ userId });
+        setTickets(ticketsData);
+        setFilteredTickets(ticketsData);
         setError(null);
       } catch (err) {
         setError("Falha ao carregar ingressos");
@@ -39,7 +38,7 @@ const TicketsPage = () => {
     };
 
     if (userId) {
-      fetchTickets();
+      loadTickets();
     }
   }, [userId]);
 
@@ -52,7 +51,6 @@ const TicketsPage = () => {
   }, [activeFilter, tickets]);
 
   const handleDownloadTicket = (ticketId: string) => {
-    // Lógica para download do ticket
     console.log(`Downloading ticket ${ticketId}`);
   };
 
@@ -81,86 +79,22 @@ const TicketsPage = () => {
       <Header />
       <Container>
         <Section className="mt-8 bg-white p-6 rounded-lg shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Meus Ingressos</h1>
-            <div className="mt-4 md:mt-0">
-              <BreadCrumbs
-                items={[
-                  { label: 'Todos', href: '#', active: activeFilter === 'all', onClick: () => setActiveFilter('all') },
-                  { label: 'Ativos', href: '#', active: activeFilter === 'active', onClick: () => setActiveFilter('active') },
-                  { label: 'Pendentes', href: '#', active: activeFilter === 'pending', onClick: () => setActiveFilter('pending') },
-                  { label: 'Cancelados', href: '#', active: activeFilter === 'cancelled', onClick: () => setActiveFilter('cancelled') },
-                  { label: 'Concluídos', href: '#', active: activeFilter === 'completed', onClick: () => setActiveFilter('completed') },
-                ]}
-              />
-            </div>
-          </div>
+          <TicketsHeader activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
 
           {isLoading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-            </div>
+            <Spinner />
           ) : error ? (
-            <div className="text-center py-8">
-              <p className="text-red-500">{error}</p>
-              <Button variant="ghost" className="mt-4" onClick={() => window.location.reload()}>
-                Tentar novamente
-              </Button>
-            </div>
+            <ErrorState errorMessage={error} onRetry={() => window.location.reload()} />
           ) : filteredTickets.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTickets.map((ticket) => (
-                <Card key={ticket.id} className="hover:shadow-md transition-shadow">
-                  <div className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      <Badge color={getStatusBadgeColor(ticket.status)}>
-                        {getStatusLabel(ticket.status)}
-                      </Badge>
-                      <Button 
-                        size="small" 
-                        variant="ghost" 
-                        onClick={() => handleDownloadTicket(ticket.id)}
-                        className="text-gray-500 hover:text-primary"
-                      >
-                        <FiDownload className="mr-1" /> Baixar
-                      </Button>
-                    </div>
-
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">{ticket.event}</h3>
-                    
-                    <div className="space-y-3 text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <FaCalendarAlt className="text-gray-400" />
-                        <span>{new Date(ticket.expiredAt).toLocaleDateString('pt-BR', { 
-                          day: '2-digit', 
-                          month: 'long', 
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <FaMapMarkerAlt className="text-gray-400" />
-                        <span>{ticket.location}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <FaTicketAlt className="text-gray-400" />
-                        <span>{ticket.sector}</span>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                      <span className="font-medium text-gray-700">Valor:</span>
-                      <span className="font-bold text-lg text-primary">
-                        {typeof ticket.price === 'number' 
-                          ? ticket.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) 
-                          : 'N/A'}
-                      </span>
-                    </div>
-                  </div>
-                </Card>
+                <TicketCard
+                  key={ticket.id}
+                  ticket={ticket}
+                  getStatusBadgeColor={getStatusBadgeColor}
+                  getStatusLabel={getStatusLabel}
+                  handleDownloadTicket={handleDownloadTicket}
+                />
               ))}
             </div>
           ) : (

@@ -8,7 +8,7 @@ export const EventCard = ({ event }: { event: Event }) => (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
     <div className="relative h-48">
         <Image
-        src={event.bannerUrl ? event.bannerUrl : '/default-event.jpg'}
+        src={'/default-event.jpg'}
         alt={event.name}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

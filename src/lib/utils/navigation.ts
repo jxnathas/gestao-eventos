@@ -5,7 +5,11 @@ export const useNavigation = () => {
   
   const navigateTo = (url: string) => {
     router.push(url);
-  }; 
+  };
+
+  const navigateTo404 = () => {
+    router.push('/404');
+  };
   
-  return { navigateTo };
+  return { navigateTo, navigateTo404 };
 };

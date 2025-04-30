@@ -7,6 +7,7 @@ import { Header } from "@/components/ui/Header";
 import { Input } from "@/components/ui/Input";
 import { Section } from "@/components/ui/Section";
 import { useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 
 function SettingsPage() {
 
@@ -29,8 +30,9 @@ function SettingsPage() {
                 onClick={() => {
                   window.location.href = '/dashboard';
                 }}
+                className="flex items-center gap-2"
               >
-                {'<'}
+                <FaArrowLeft />
               </Button>
               <h1 className="text-2xl font-semibold">Configurações da Loja</h1>
             </div>
@@ -38,8 +40,8 @@ function SettingsPage() {
 
           <form className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input label="Nome da Loja" />
-              <Input label="URL Personalizada" />
+              <Input label="Nome da Loja" name='name' />
+              <Input label="Banner" name='banner' type="file" />
             </div>
 
             <div>

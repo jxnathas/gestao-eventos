@@ -89,7 +89,7 @@ export function useEditEvent(userId: string) {
       );
       await Promise.all(lotPromises);
 
-      window.location.href = `/my-events/${eventId}`;
+      window.location.href = `/my-events`;
     } catch (err) {
       console.error('Failed to update event', err);
     } finally {

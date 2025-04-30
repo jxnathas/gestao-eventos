@@ -29,7 +29,7 @@ export const ColorPicker = ({
 
   useEffect(() => {
     onColorChange(color);
-  }, [color, onColorChange]);
+  }, [color]);
 
   return (
     <div className="space-y-2">
@@ -77,7 +77,7 @@ export const ColorPicker = ({
             />
             <Button 
               variant="ghost" 
-              size="sm" 
+              size="small" 
               onClick={() => setShowPicker(false)}
             >
               OK

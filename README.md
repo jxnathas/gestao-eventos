@@ -52,7 +52,7 @@ npm run socket | yarn socket | pnpm socket | bun socket
   /types
 ```
 
-# Variaveis de ambiente
+## Variaveis de ambiente
 Crie um arquivo .env na raiz do projeto e adicione as linhas abaixo:
 ```
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
@@ -124,6 +124,9 @@ NEXT_PUBLIC_SOCKET_HOST=localhost
 
           ],
           "orders": [
+
+          ],
+          "coupons": [
 
           ],
           "tickets": [
